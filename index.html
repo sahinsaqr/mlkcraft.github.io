@@ -1,39 +1,648 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLK Craft</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        .container {
-            padding: 20px;
-        }
-        h1 {
-            font-size: 3rem;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.2rem;
-            color: #888;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLK Craft — Oyun, E-Ticaret ve Dijital Çözümler</title>
+  <meta name="description" content="MLK Craft; oyun geliştirme, e-ticaret projeleri ve yazılım çözümleri üreten bir dijital stüdyodur.">
+  <meta name="theme-color" content="#050914">
+  <meta property="og:title" content="MLK Craft">
+  <meta property="og:description" content="Oyunlar, e-ticaret ve dijital çözümler üreten stüdyo.">
+  <meta property="og:url" content="https://mlkcraft.com/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%230b1328'/><path d='M14 46V18l18 16 18-16v28' fill='none' stroke='%234f8cff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050914;
+      --bg-2: #0a1224;
+      --card: #0e1830;
+      --card-hover: #13203d;
+      --border: rgba(120, 150, 220, 0.14);
+      --border-strong: rgba(120, 150, 220, 0.28);
+      --text: #e8eeff;
+      --muted: #8c9aba;
+      --accent: #4f8cff;
+      --accent-2: #8b5cf6;
+      --accent-3: #22d3ee;
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img, svg { display: block; }
+
+    .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- Background glow ---------- */
+    .bg-glow {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(600px 400px at 15% 10%, rgba(79, 140, 255, 0.16), transparent 70%),
+        radial-gradient(500px 400px at 85% 25%, rgba(139, 92, 246, 0.12), transparent 70%),
+        radial-gradient(700px 500px at 50% 100%, rgba(34, 211, 238, 0.06), transparent 70%),
+        var(--bg);
+    }
+    .bg-grid {
+      position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(120,150,220,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120,150,220,0.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 70%);
+    }
+
+    /* ---------- Nav ---------- */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background .3s, border-color .3s, backdrop-filter .3s;
+      border-bottom: 1px solid transparent;
+    }
+    header.scrolled {
+      background: rgba(5, 9, 20, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-color: var(--border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; letter-spacing: .5px; }
+    .logo-mark {
+      width: 36px; height: 36px; border-radius: 11px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid; place-items: center;
+      box-shadow: 0 6px 20px rgba(79, 140, 255, 0.35);
+    }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 999px; color: var(--muted); font-size: .95rem; font-weight: 500;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(120,150,220,0.08); }
+    .nav-links .nav-cta { color: var(--text); background: var(--accent); margin-left: 6px; }
+    .nav-links .nav-cta:hover { background: #3d7bf0; }
+
+    .menu-btn {
+      display: none; width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(120,150,220,0.08); border: 1px solid var(--border);
+      color: var(--text); cursor: pointer; place-items: center;
+    }
+    .menu-btn span, .menu-btn span::before, .menu-btn span::after {
+      display: block; width: 18px; height: 2px; background: currentColor; border-radius: 2px;
+      position: relative; transition: transform .25s, background .25s;
+    }
+    .menu-btn span::before, .menu-btn span::after { content: ""; position: absolute; left: 0; }
+    .menu-btn span::before { top: -6px; }
+    .menu-btn span::after { top: 6px; }
+    .menu-open .menu-btn span { background: transparent; }
+    .menu-open .menu-btn span::before { transform: translateY(6px) rotate(45deg); }
+    .menu-open .menu-btn span::after { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 1rem;
+      transition: transform .2s, box-shadow .2s, background .2s, border-color .2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 30px rgba(79, 140, 255, 0.3);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(79, 140, 255, 0.45); }
+    .btn-ghost { border: 1px solid var(--border-strong); background: rgba(14, 24, 48, 0.6); }
+    .btn-ghost:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding: 120px 0 80px; }
+    .hero-inner { text-align: center; max-width: 820px; margin: 0 auto; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 16px; border-radius: 999px; font-size: .85rem; font-weight: 500; color: #b9c8ee;
+      background: rgba(79, 140, 255, 0.1); border: 1px solid rgba(79, 140, 255, 0.25);
+      margin-bottom: 28px;
+    }
+    .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-3); box-shadow: 0 0 10px var(--accent-3); animation: pulse 2s infinite; }
+    @keyframes pulse { 50% { opacity: .35; } }
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: clamp(3rem, 10vw, 6.5rem); line-height: 1; letter-spacing: -2px;
+      margin-bottom: 22px;
+    }
+    .gradient-text {
+      background: linear-gradient(120deg, #ffffff 10%, #9dbaff 45%, var(--accent-2) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero .slogan { font-size: clamp(1.25rem, 3vw, 1.7rem); font-weight: 600; margin-bottom: 14px; }
+    .hero .lead { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--muted); max-width: 620px; margin: 0 auto 38px; }
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 56px;
+    }
+    .stat {
+      padding: 14px 22px; border-radius: var(--radius-sm);
+      background: rgba(14, 24, 48, 0.55); border: 1px solid var(--border);
+      font-size: .9rem; color: var(--muted);
+    }
+    .stat strong { display: block; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; }
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      width: 26px; height: 42px; border-radius: 20px; border: 2px solid var(--border-strong);
+    }
+    .scroll-hint::after {
+      content: ""; position: absolute; top: 8px; left: 50%; width: 4px; height: 8px; margin-left: -2px;
+      border-radius: 4px; background: var(--muted); animation: scroll 1.8s infinite;
+    }
+    @keyframes scroll { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
+
+    /* ---------- Sections ---------- */
+    section { padding: 110px 0; position: relative; }
+    .section-head { text-align: center; max-width: 640px; margin: 0 auto 56px; }
+    .eyebrow {
+      display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+    }
+    .section-head h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 2.9rem); line-height: 1.15; letter-spacing: -1px; margin-bottom: 14px; }
+    .section-head p { color: var(--muted); font-size: 1.05rem; }
+
+    /* ---------- Cards ---------- */
+    .grid { display: grid; gap: 22px; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+    .card {
+      position: relative; border-radius: var(--radius); padding: 34px 30px;
+      background: linear-gradient(180deg, var(--card), var(--bg-2));
+      border: 1px solid var(--border);
+      transition: transform .3s ease, border-color .3s, box-shadow .3s;
+      overflow: hidden;
+    }
+    .card::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), rgba(79,140,255,0.12), transparent 45%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .card:hover { transform: translateY(-6px); border-color: var(--border-strong); box-shadow: 0 24px 50px rgba(0,0,0,0.45); }
+    .card:hover::before { opacity: 1; }
+
+    .icon {
+      width: 58px; height: 58px; border-radius: 17px; display: grid; place-items: center; margin-bottom: 24px;
+      background: rgba(79,140,255,0.12); border: 1px solid rgba(79,140,255,0.25); color: var(--accent);
+    }
+    .icon.violet { background: rgba(139,92,246,0.12); border-color: rgba(139,92,246,0.28); color: #a78bfa; }
+    .icon.cyan { background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.25); color: var(--accent-3); }
+    .card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 10px; }
+    .card p { color: var(--muted); font-size: .98rem; margin-bottom: 20px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
+    .tags li {
+      font-size: .8rem; padding: 5px 12px; border-radius: 999px; color: #b9c8ee;
+      background: rgba(120,150,220,0.08); border: 1px solid var(--border);
+    }
+
+    /* ---------- Portfolio ---------- */
+    .filters { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+    .filter {
+      font: inherit; font-size: .92rem; font-weight: 500; cursor: pointer;
+      padding: 9px 18px; border-radius: 999px; color: var(--muted);
+      background: rgba(14,24,48,0.6); border: 1px solid var(--border);
+      transition: all .2s;
+    }
+    .filter:hover { color: var(--text); border-color: var(--border-strong); }
+    .filter.active { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+    .project {
+      border-radius: var(--radius); overflow: hidden;
+      background: var(--card); border: 1px solid var(--border);
+      transition: transform .3s, border-color .3s, box-shadow .3s, opacity .3s;
+      display: flex; flex-direction: column;
+    }
+    .project:hover { transform: translateY(-6px); border-color: var(--border-strong); box-shadow: 0 24px 50px rgba(0,0,0,0.45); }
+    .project.hidden { display: none; }
+    .thumb {
+      position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+      display: grid; place-items: center;
+    }
+    .thumb::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(14,24,48,0.9));
+    }
+    .thumb svg { width: 38%; height: auto; opacity: .95; position: relative; z-index: 1; transition: transform .4s ease; filter: drop-shadow(0 10px 24px rgba(0,0,0,0.35)); }
+    .project:hover .thumb svg { transform: scale(1.08) rotate(-2deg); }
+    .t-game   { background: radial-gradient(circle at 30% 30%, #3b5bdb, transparent 60%), radial-gradient(circle at 80% 80%, #7c3aed, transparent 55%), #0b1430; }
+    .t-game2  { background: radial-gradient(circle at 70% 20%, #0ea5e9, transparent 55%), radial-gradient(circle at 20% 90%, #4338ca, transparent 60%), #081226; }
+    .t-shop   { background: radial-gradient(circle at 25% 75%, #0891b2, transparent 60%), radial-gradient(circle at 80% 20%, #2563eb, transparent 55%), #071427; }
+    .t-shop2  { background: radial-gradient(circle at 75% 70%, #9333ea, transparent 55%), radial-gradient(circle at 20% 20%, #0284c7, transparent 60%), #0a1026; }
+    .t-soft   { background: radial-gradient(circle at 50% 30%, #1d4ed8, transparent 60%), radial-gradient(circle at 90% 90%, #0d9488, transparent 55%), #061224; }
+    .t-soon   { background: repeating-linear-gradient(45deg, rgba(120,150,220,0.06) 0 12px, transparent 12px 24px), #0a1224; }
+
+    .status {
+      position: absolute; top: 14px; left: 14px; z-index: 2;
+      font-size: .75rem; font-weight: 600; letter-spacing: .5px;
+      padding: 5px 11px; border-radius: 999px;
+      background: rgba(5,9,20,0.65); border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+    .status.dev { color: #fcd34d; }
+    .status.plan { color: #93c5fd; }
+    .status.soon { color: #c4b5fd; }
+    .project-body { padding: 22px 24px 26px; flex: 1; display: flex; flex-direction: column; }
+    .project-cat { font-size: .78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+    .project h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 8px; }
+    .project p { color: var(--muted); font-size: .95rem; }
+
+    /* ---------- Contact ---------- */
+    .contact-card {
+      position: relative; overflow: hidden; text-align: center;
+      border-radius: 30px; padding: 72px 32px;
+      background:
+        radial-gradient(500px 300px at 20% 0%, rgba(79,140,255,0.25), transparent 70%),
+        radial-gradient(500px 300px at 80% 100%, rgba(139,92,246,0.22), transparent 70%),
+        var(--card);
+      border: 1px solid var(--border-strong);
+    }
+    .contact-card h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -1px; line-height: 1.15; margin-bottom: 14px; }
+    .contact-card p { color: var(--muted); max-width: 540px; margin: 0 auto 32px; font-size: 1.05rem; }
+    .mail-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .copy-btn { font: inherit; cursor: pointer; color: var(--text); }
+    .copy-btn.copied { border-color: #34d399; color: #34d399; }
+
+    /* ---------- Footer ---------- */
+    footer { border-top: 1px solid var(--border); padding: 48px 0 36px; margin-top: 40px; }
+    .footer-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; flex-wrap: wrap; margin-bottom: 36px; }
+    .footer-brand p { color: var(--muted); font-size: .95rem; margin-top: 12px; max-width: 320px; }
+    .footer-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+    .footer-col h4 { font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; font-weight: 600; }
+    .footer-col ul { list-style: none; display: grid; gap: 8px; }
+    .footer-col a { color: #c3cff0; font-size: .95rem; transition: color .2s; }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: .88rem; }
+
+    /* ---------- Reveal ---------- */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 960px) {
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .container { padding: 0 18px; }
+      .menu-btn { display: grid; }
+      .nav-links {
+        position: fixed; top: 72px; left: 12px; right: 12px;
+        flex-direction: column; align-items: stretch; gap: 4px; padding: 12px;
+        background: rgba(10, 18, 36, 0.97); border: 1px solid var(--border); border-radius: 20px;
+        backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+        opacity: 0; transform: translateY(-10px); pointer-events: none;
+        transition: opacity .25s, transform .25s;
+      }
+      .menu-open .nav-links { opacity: 1; transform: none; pointer-events: auto; }
+      .nav-links a { display: block; padding: 13px 16px; font-size: 1rem; }
+      .nav-links .nav-cta { margin: 6px 0 0; text-align: center; }
+      header.menu-open { background: rgba(5, 9, 20, 0.92); }
+      section { padding: 80px 0; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .hero-stats { margin-top: 40px; }
+      .stat { flex: 1 1 140px; }
+      .scroll-hint { display: none; }
+      .contact-card { padding: 52px 22px; border-radius: 24px; }
+      .footer-cols { gap: 40px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>MLK CRAFT</h1>
-        <p>Çok yakında buradayız...</p>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- ================= NAV ================= -->
+  <header id="header">
+    <div class="container nav">
+      <a href="#top" class="logo" aria-label="MLK Craft ana sayfa">
+        <span class="logo-mark">
+          <svg width="20" height="20" viewBox="0 0 64 64" fill="none"><path d="M12 48V16l20 18 20-18v32" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        MLK Craft
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menüyü aç" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#alanlar">Çalışma Alanları</a></li>
+        <li><a href="#projeler">Projeler</a></li>
+        <li><a href="#iletisim">İletişim</a></li>
+        <li><a href="mailto:info@mlkcraft.com" class="nav-cta">Bize Ulaşın</a></li>
+      </ul>
     </div>
+  </header>
+
+  <main id="top">
+    <!-- ================= HERO ================= -->
+    <section class="hero">
+      <div class="bg-grid" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero-inner">
+          <span class="badge reveal"><span class="dot"></span> Oyun · E-Ticaret · Yazılım</span>
+          <h1 class="reveal"><span class="gradient-text">MLK Craft</span></h1>
+          <p class="slogan reveal">Fikirleri dijital deneyimlere dönüştürüyoruz.</p>
+          <p class="lead reveal">Eğlenceli oyunlardan satış yapan e-ticaret platformlarına, işinizi büyüten yazılım çözümlerine kadar; tutkuyla tasarlıyor, özenle geliştiriyoruz.</p>
+          <div class="hero-actions reveal">
+            <a href="#projeler" class="btn btn-primary">
+              Projelerimizi Keşfedin
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <a href="#iletisim" class="btn btn-ghost">İletişime Geçin</a>
+          </div>
+          <div class="hero-stats reveal">
+            <div class="stat"><strong>Oyunlar</strong>Mobil &amp; web</div>
+            <div class="stat"><strong>E-Ticaret</strong>Uçtan uca mağazalar</div>
+            <div class="stat"><strong>Yazılım</strong>Özel çözümler</div>
+          </div>
+        </div>
+      </div>
+      <a href="#alanlar" class="scroll-hint" aria-label="Aşağı kaydır"></a>
+    </section>
+
+    <!-- ================= ÇALIŞMA ALANLARI ================= -->
+    <section id="alanlar">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Çalışma Alanlarımız</span>
+          <h2>Tek çatı altında üç uzmanlık</h2>
+          <p>Farklı alanlarda ürettiğimiz her projede aynı hedefi taşıyoruz: kullanıcıların sevdiği, sağlam ve ölçeklenebilir ürünler.</p>
+        </div>
+
+        <div class="grid grid-3">
+          <article class="card reveal">
+            <div class="icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4M8 10v4"/><circle cx="15.5" cy="11" r="1" fill="currentColor"/><circle cx="17.5" cy="13" r="1" fill="currentColor"/></svg>
+            </div>
+            <h3>Oyun Geliştirme</h3>
+            <p>Mobil ve web platformları için bağımlılık yaratan bulmaca, strateji ve gündelik oyunlar tasarlıyor ve geliştiriyoruz.</p>
+            <ul class="tags"><li>Mobil Oyun</li><li>Web Oyun</li><li>Oyun Tasarımı</li></ul>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon violet">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h15l-1.5 8.5a2 2 0 0 1-2 1.5H9a2 2 0 0 1-2-1.6L5 3H2"/><circle cx="9.5" cy="20.5" r="1.3"/><circle cx="17.5" cy="20.5" r="1.3"/></svg>
+            </div>
+            <h3>E-Ticaret</h3>
+            <p>Hızlı, güvenli ve dönüşüm odaklı online mağazalar kuruyor; ürün, ödeme ve kargo süreçlerini uçtan uca yönetiyoruz.</p>
+            <ul class="tags"><li>Online Mağaza</li><li>Ödeme Entegrasyonu</li><li>Pazaryeri</li></ul>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon cyan">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></svg>
+            </div>
+            <h3>Dijital Çözümler</h3>
+            <p>İşletmelere özel web uygulamaları, otomasyon araçları ve yönetim panelleriyle dijital dönüşüme destek oluyoruz.</p>
+            <ul class="tags"><li>Web Uygulama</li><li>Otomasyon</li><li>API &amp; Entegrasyon</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROJELER ================= -->
+    <section id="projeler">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Projelerimiz / Portföy</span>
+          <h2>Yakında sahnede</h2>
+          <p>Üzerinde çalıştığımız oyunlar, e-ticaret projeleri ve yazılım çözümleri. Yeni projeler eklendikçe bu alan büyüyecek.</p>
+        </div>
+
+        <div class="filters reveal" role="tablist" aria-label="Proje filtresi">
+          <button class="filter active" data-filter="all">Tümü</button>
+          <button class="filter" data-filter="oyun">Oyunlar</button>
+          <button class="filter" data-filter="eticaret">E-Ticaret</button>
+          <button class="filter" data-filter="yazilim">Yazılım</button>
+        </div>
+
+        <div class="grid grid-3" id="projectGrid">
+          <article class="project reveal" data-cat="oyun">
+            <div class="thumb t-game">
+              <span class="status dev">● Geliştiriliyor</span>
+              <svg viewBox="0 0 100 100" fill="none"><rect x="10" y="10" width="80" height="80" rx="14" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="3"/><path d="M36.7 10v80M63.3 10v80M10 36.7h80M10 63.3h80" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><text x="23" y="30" font-family="Space Grotesk, sans-serif" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">5</text><text x="50" y="57" font-family="Space Grotesk, sans-serif" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">3</text><text x="77" y="84" font-family="Space Grotesk, sans-serif" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">9</text></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">Mobil Oyun</span>
+              <h3>Sudoku</h3>
+              <p>Günlük bulmacalar, haftalık yarışmalar ve kulüplerle zenginleştirilmiş, çok dilli mobil Sudoku deneyimi.</p>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="oyun">
+            <div class="thumb t-game2">
+              <span class="status soon">● Yakında</span>
+              <svg viewBox="0 0 100 100" fill="none"><path d="M50 8 88 30v40L50 92 12 70V30z" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M50 50 88 30M50 50 12 30M50 50v42" stroke="#fff" stroke-opacity=".6" stroke-width="2.5"/><circle cx="50" cy="50" r="6" fill="#fff"/></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">Oyun</span>
+              <h3>Yeni Oyun Projesi</h3>
+              <p>Yeni bir bulmaca / strateji oyunu üzerinde çalışıyoruz. Detaylar çok yakında burada.</p>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="eticaret">
+            <div class="thumb t-shop">
+              <span class="status plan">● Planlanıyor</span>
+              <svg viewBox="0 0 100 100" fill="none"><path d="M20 35h60l-5 50H25z" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M37 42V30a13 13 0 0 1 26 0v12" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M40 62l7 7 14-14" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">E-Ticaret</span>
+              <h3>Online Mağaza</h3>
+              <p>Modern arayüz, güvenli ödeme ve kolay yönetim paneline sahip yeni nesil e-ticaret platformu.</p>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="eticaret">
+            <div class="thumb t-shop2">
+              <span class="status soon">● Yakında</span>
+              <svg viewBox="0 0 100 100" fill="none"><rect x="14" y="22" width="72" height="56" rx="10" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="3"/><path d="M14 38h72" stroke="#fff" stroke-width="3"/><rect x="24" y="50" width="20" height="16" rx="4" fill="#fff" fill-opacity=".8"/><path d="M54 54h22M54 62h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">E-Ticaret</span>
+              <h3>Pazaryeri Entegrasyonu</h3>
+              <p>Ürün, stok ve siparişleri birden fazla satış kanalında tek noktadan yöneten çözüm.</p>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="yazilim">
+            <div class="thumb t-soft">
+              <span class="status plan">● Planlanıyor</span>
+              <svg viewBox="0 0 100 100" fill="none"><rect x="12" y="16" width="76" height="68" rx="12" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="3"/><rect x="22" y="52" width="10" height="22" rx="3" fill="#fff" fill-opacity=".85"/><rect x="38" y="40" width="10" height="34" rx="3" fill="#fff" fill-opacity=".85"/><rect x="54" y="30" width="10" height="44" rx="3" fill="#fff" fill-opacity=".85"/><rect x="70" y="46" width="10" height="28" rx="3" fill="#fff" fill-opacity=".85"/></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">Dijital Çözüm</span>
+              <h3>Yönetim Paneli</h3>
+              <p>İşletmeler için raporlama, otomasyon ve veri takibini kolaylaştıran web tabanlı yönetim aracı.</p>
+            </div>
+          </article>
+
+          <article class="project reveal" data-cat="all">
+            <div class="thumb t-soon">
+              <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="36" stroke="#8c9aba" stroke-width="3" stroke-dasharray="8 7"/><path d="M50 36v28M36 50h28" stroke="#8c9aba" stroke-width="4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">Sıradaki</span>
+              <h3>Projeniz burada olabilir</h3>
+              <p>Aklınızda bir oyun, mağaza ya da yazılım fikri mi var? Birlikte hayata geçirelim.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= İLETİŞİM ================= -->
+    <section id="iletisim">
+      <div class="container">
+        <div class="contact-card reveal">
+          <span class="eyebrow">İletişim</span>
+          <h2>Bir fikriniz mi var?<br>Konuşalım.</h2>
+          <p>İş birliği, proje teklifi ya da sadece merhaba demek için bize e-posta gönderin. En kısa sürede dönüş yapıyoruz.</p>
+          <div class="mail-row">
+            <a href="mailto:info@mlkcraft.com" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+              info@mlkcraft.com
+            </a>
+            <button type="button" class="btn btn-ghost copy-btn" id="copyBtn" data-email="info@mlkcraft.com">Adresi Kopyala</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#top" class="logo">
+            <span class="logo-mark">
+              <svg width="20" height="20" viewBox="0 0 64 64" fill="none"><path d="M12 48V16l20 18 20-18v32" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            MLK Craft
+          </a>
+          <p>Oyunlar, e-ticaret projeleri ve dijital çözümler üreten bağımsız stüdyo.</p>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>Keşfet</h4>
+            <ul>
+              <li><a href="#alanlar">Çalışma Alanları</a></li>
+              <li><a href="#projeler">Projeler</a></li>
+              <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>İletişim</h4>
+            <ul>
+              <li><a href="mailto:info@mlkcraft.com">info@mlkcraft.com</a></li>
+              <li><a href="https://mlkcraft.com">mlkcraft.com</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> MLK Craft. Tüm hakları saklıdır.</span>
+        <span>Tutkuyla üretildi.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var header = document.getElementById('header');
+      var menuBtn = document.getElementById('menuBtn');
+      var navLinks = document.getElementById('navLinks');
+
+      // Sticky header background on scroll
+      function onScroll() { header.classList.toggle('scrolled', window.scrollY > 20); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Mobile menu
+      function setMenu(open) {
+        header.classList.toggle('menu-open', open);
+        menuBtn.setAttribute('aria-expanded', open);
+        menuBtn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+      }
+      menuBtn.addEventListener('click', function () { setMenu(!header.classList.contains('menu-open')); });
+      navLinks.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+      // Reveal on scroll
+      var reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) { entry.target.classList.add('visible'); io.unobserve(entry.target); }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function (el, i) {
+          el.style.transitionDelay = (i % 3) * 90 + 'ms';
+          io.observe(el);
+        });
+      } else {
+        reveals.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      // Card spotlight follows cursor
+      document.querySelectorAll('.card').forEach(function (card) {
+        card.addEventListener('pointermove', function (e) {
+          var r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+          card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
+      });
+
+      // Portfolio filter
+      var filters = document.querySelectorAll('.filter');
+      var projects = document.querySelectorAll('.project');
+      filters.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          filters.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          var f = btn.dataset.filter;
+          projects.forEach(function (p) {
+            var show = f === 'all' || p.dataset.cat === f || p.dataset.cat === 'all';
+            p.classList.toggle('hidden', !show);
+            if (show) p.classList.add('visible');
+          });
+        });
+      });
+
+      // Copy email
+      var copyBtn = document.getElementById('copyBtn');
+      copyBtn.addEventListener('click', function () {
+        var email = copyBtn.dataset.email;
+        var done = function () {
+          copyBtn.textContent = 'Kopyalandı ✓';
+          copyBtn.classList.add('copied');
+          setTimeout(function () { copyBtn.textContent = 'Adresi Kopyala'; copyBtn.classList.remove('copied'); }, 2000);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(done, function () { window.location.href = 'mailto:' + email; });
+        } else {
+          window.location.href = 'mailto:' + email;
+        }
+      });
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
 </body>
 </html>
