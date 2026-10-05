@@ -87,14 +87,23 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{display:inline-block;width:14px;height:14px;border:1px solid var(--ink)}
 .note{margin-top:14px;font-size:13px;color:var(--muted)}
-.home{display:inline-block;margin-bottom:10px;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:15px;letter-spacing:.04em;color:var(--muted);text-decoration:none}
-.home:hover,.home:focus-visible{color:var(--dykem)}
+.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:12px;text-decoration:none}
+.logo img{height:auto;transition:filter .3s,transform .3s}
+.logo-mark{width:44px;filter:drop-shadow(0 0 8px rgba(34,211,238,.35))}
+.logo-text{width:60px;filter:brightness(.2)}
+.logo:hover .logo-mark{filter:drop-shadow(0 0 12px rgba(34,211,238,.6));transform:rotate(-4deg)}
+.logo:focus-visible{outline:3px solid var(--dykem);outline-offset:4px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo-text{filter:none}}
+:root[data-theme="dark"] .logo-text{filter:none}
 @media (prefers-reduced-motion:no-preference){.drawing svg *{transition:all .25s ease}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<a class="home" href="/">← MLK Craft</a>
+<a href="/" class="logo" aria-label="MLK Craft ana sayfa">
+  <img class="logo-mark" src="/assets/logo-mark.png" width="44" height="53" alt="MLK Craft logosu">
+  <img class="logo-text" src="/assets/logo-text.png" width="60" height="34" alt="MLK Craft">
+</a>
 <header>
   <h1>Torna malzeme hesabı</h1>
   <p>Boydan kesim, ağırlık ve maliyet</p>
