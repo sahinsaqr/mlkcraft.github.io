@@ -7,6 +7,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Torna Hesap">
 <title>Torna malzeme hesabı</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
@@ -84,11 +87,14 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{display:inline-block;width:14px;height:14px;border:1px solid var(--ink)}
 .note{margin-top:14px;font-size:13px;color:var(--muted)}
+.home{display:inline-block;margin-bottom:10px;font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:15px;letter-spacing:.04em;color:var(--muted);text-decoration:none}
+.home:hover,.home:focus-visible{color:var(--dykem)}
 @media (prefers-reduced-motion:no-preference){.drawing svg *{transition:all .25s ease}}
 </style>
 </head>
 <body>
 <div class="wrap">
+<a class="home" href="/">← MLK Craft</a>
 <header>
   <h1>Torna malzeme hesabı</h1>
   <p>Boydan kesim, ağırlık ve maliyet</p>
@@ -353,6 +359,11 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
 
   update();
 })();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/araclar/torna/sw.js', {scope: '/araclar/torna/', updateViaCache: 'none'}).catch(() => {});
+  });
+}
 </script>
 </body>
 </html>

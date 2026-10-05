@@ -246,6 +246,7 @@
     .t-shop   { background: radial-gradient(circle at 25% 75%, #0891b2, transparent 60%), radial-gradient(circle at 80% 20%, #2563eb, transparent 55%), #071427; }
     .t-shop2  { background: radial-gradient(circle at 75% 70%, #9333ea, transparent 55%), radial-gradient(circle at 20% 20%, #0284c7, transparent 60%), #0a1026; }
     .t-soft   { background: radial-gradient(circle at 50% 30%, #1d4ed8, transparent 60%), radial-gradient(circle at 90% 90%, #0d9488, transparent 55%), #061224; }
+    .t-tool   { background: radial-gradient(circle at 30% 25%, #2563eb, transparent 58%), radial-gradient(circle at 85% 85%, #0891b2, transparent 55%), #071226; }
     .t-soon   { background: repeating-linear-gradient(45deg, rgba(120,150,220,0.06) 0 12px, transparent 12px 24px), #0a1224; }
 
     .status {
@@ -258,6 +259,8 @@
     .status.dev { color: #fcd34d; }
     .status.plan { color: #93c5fd; }
     .status.soon { color: #c4b5fd; }
+    .status.live { color: #6ee7b7; }
+    a.project:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
     .project-body { padding: 22px 24px 26px; flex: 1; display: flex; flex-direction: column; }
     .project-cat { font-size: .78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
     .project h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.25rem; margin-bottom: 8px; }
@@ -493,6 +496,18 @@
               <p>İşletmeler için raporlama, otomasyon ve veri takibini kolaylaştıran web tabanlı yönetim aracı.</p>
             </div>
           </article>
+
+          <a class="project reveal" data-cat="yazilim" href="/araclar/torna/">
+            <div class="thumb t-tool">
+              <span class="status live">● Yayında</span>
+              <svg viewBox="0 0 100 100" fill="none"><path d="M45.4 13.6h9.2l1.5 8.3a28 28 0 0 1 7.6 3.1l6.9-4.8 6.5 6.5-4.8 6.9a28 28 0 0 1 3.1 7.6l8.3 1.5v9.2l-8.3 1.5a28 28 0 0 1-3.1 7.6l4.8 6.9-6.5 6.5-6.9-4.8a28 28 0 0 1-7.6 3.1l-1.5 8.3h-9.2l-1.5-8.3a28 28 0 0 1-7.6-3.1l-6.9 4.8-6.5-6.5 4.8-6.9a28 28 0 0 1-3.1-7.6l-8.3-1.5v-9.2l8.3-1.5a28 28 0 0 1 3.1-7.6l-4.8-6.9 6.5-6.5 6.9 4.8a28 28 0 0 1 7.6-3.1z" fill="rgba(255,255,255,0.12)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/><path d="M50 36.5 61.7 43.3v13.4L50 63.5 38.3 56.7V43.3z" fill="#fff" fill-opacity=".85"/></svg>
+            </div>
+            <div class="project-body">
+              <span class="project-cat">Yazılım</span>
+              <h3>Torna Malzeme Hesabı</h3>
+              <p>Altıgen ve yuvarlak malzemede boy hesabı, hurda ve parça birim maliyetini hesaplayan web uygulaması.</p>
+            </div>
+          </a>
 
           <article class="project reveal" data-cat="all">
             <div class="thumb t-soon">
