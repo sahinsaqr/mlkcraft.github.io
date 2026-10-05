@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Torna Hesap">
+<title>Torna malzeme hesabı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9ECEA; --sheet:#F7F8F6; --ink:#1E2932; --muted:#5B6770; --rule:#B9C1C4;
+  --dykem:#1E4E9C; --dykem-soft:#D7E1F1; --cut:#D2461E; --part:#7C8C98; --scrap:#C9CFD2;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#161C21; --sheet:#1E262C; --ink:#E4E9EC; --muted:#9AA6AE; --rule:#3A464E;
+    --dykem:#6E9BE6; --dykem-soft:#22344F; --cut:#F06A40; --part:#8D9DA9; --scrap:#46525A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#161C21; --sheet:#1E262C; --ink:#E4E9EC; --muted:#9AA6AE; --rule:#3A464E;
+  --dykem:#6E9BE6; --dykem-soft:#22344F; --cut:#F06A40; --part:#8D9DA9; --scrap:#46525A;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:18px}
+h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em}
+header p{margin:0;color:var(--muted);font-size:14px;text-align:right}
+.grid{display:grid;gap:18px}
+@media (min-width:860px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}}
+.sheet{background:var(--sheet);border:1px solid var(--rule);padding:16px}
+h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:22px;margin:0 0 12px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink);font:600 16px "Barlow",sans-serif;padding:11px 8px;min-height:44px;cursor:pointer}
+.seg button+button{border-left:1.5px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.seg button:focus-visible{outline:3px solid var(--dykem);outline-offset:-3px}
+.drawing{margin:14px 0 6px;display:flex;justify-content:center}
+.drawing svg{width:100%;max-width:300px;height:auto}
+.field{display:grid;gap:5px;margin-top:12px}
+.field label{font-weight:500;font-size:15px}
+.field .hint{color:var(--muted);font-size:13px}
+.inp{position:relative}
+.inp input,.inp select{width:100%;font:500 18px "Barlow",sans-serif;color:var(--ink);background:var(--paper);border:1.5px solid var(--rule);border-radius:6px;padding:10px 52px 10px 12px;min-height:46px;appearance:none;-webkit-appearance:none}
+.inp select{padding-right:36px;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 12px) 20px;background-size:6px 6px;background-repeat:no-repeat}
+.inp input:focus,.inp select:focus{outline:none;border-color:var(--dykem);box-shadow:0 0 0 3px var(--dykem-soft)}
+.inp .unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.err{margin-top:14px;border-left:4px solid var(--cut);background:color-mix(in srgb,var(--cut) 10%,transparent);padding:10px 12px;font-size:15px}
+.err:empty{display:none}
+/* title block */
+.block{border:2px solid var(--ink)}
+.block .hero{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--ink)}
+.block .hero div{padding:12px 14px}
+.block .hero div+div{border-left:1.5px solid var(--ink)}
+.block .k{font-size:14px;color:var(--muted)}
+.block .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(30px,7vw,44px);line-height:1.05}
+.block .hero .price .big{color:var(--dykem)}
+.rows{display:grid;grid-template-columns:1fr 1fr}
+.rows div{padding:9px 14px;border-top:1px solid var(--rule)}
+.rows div:nth-child(-n+2){border-top:0}
+.rows div:nth-child(odd){border-right:1px solid var(--rule)}
+.rows .v{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:22px;line-height:1.15}
+.rows .v small{font-family:"Barlow",sans-serif;font-weight:500;font-size:14px;color:var(--muted)}
+.rows .scrapv{color:var(--cut)}
+.plan{margin-top:18px}
+.plan svg{display:block;width:100%;height:auto}
+.planrow{margin-top:12px}
+.planrow .lbl{font-size:15px;margin-bottom:6px}
+.planrow .lbl b{font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:14px;border:1px solid var(--ink)}
+.note{margin-top:14px;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.drawing svg *{transition:all .25s ease}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Torna malzeme hesabı</h1>
+  <p>Boydan kesim, ağırlık ve maliyet</p>
+</header>
+
+<div class="grid">
+  <section class="sheet" aria-label="Girdiler">
+    <h2>Malzeme</h2>
+    <div class="seg" role="group" aria-label="Profil">
+      <button type="button" id="bHex" aria-pressed="true">Altıgen</button>
+      <button type="button" id="bRound" aria-pressed="false">Yuvarlak</button>
+    </div>
+
+    <div class="drawing" id="drawing" aria-hidden="true"></div>
+
+    <div class="field">
+      <label for="size" id="sizeLbl">İki karşılıklı kenar arası</label>
+      <div class="inp"><input id="size" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
+    </div>
+
+    <div class="field">
+      <label for="mat">Malzeme türü</label>
+      <div class="inp"><select id="mat">
+        <option value="7.85">Çelik — 7,85 g/cm³</option>
+        <option value="7.93">Paslanmaz — 7,93 g/cm³</option>
+        <option value="8.50">Pirinç — 8,50 g/cm³</option>
+        <option value="2.70">Alüminyum — 2,70 g/cm³</option>
+        <option value="8.96">Bakır — 8,96 g/cm³</option>
+        <option value="other">Diğer (yoğunluğu gir)</option>
+      </select></div>
+    </div>
+    <div class="field" id="rhoField" hidden>
+      <label for="rho">Yoğunluk</label>
+      <div class="inp"><input id="rho" inputmode="decimal" autocomplete="off"><span class="unit">g/cm³</span></div>
+    </div>
+
+    <h2 style="margin-top:22px">Kesim ve sipariş</h2>
+    <div class="two">
+      <div class="field">
+        <label for="len">Parça boyu</label>
+        <div class="inp"><input id="len" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
+      </div>
+      <div class="field">
+        <label for="qty">Adet</label>
+        <div class="inp"><input id="qty" inputmode="numeric" autocomplete="off"><span class="unit">ad</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="fin">Bitmiş parça ağırlığı</label>
+      <div class="inp"><input id="fin" inputmode="decimal" autocomplete="off" placeholder="Boş bırakılabilir"><span class="unit">g</span></div>
+      <span class="hint">Tornalandıktan sonraki ağırlık. Boş bırakılırsa talaş hesaba katılmaz.</span>
+    </div>
+    <div class="field">
+      <label id="kerfLbl">Kesme ucu kalınlığı</label>
+      <div class="seg" role="group" aria-labelledby="kerfLbl">
+        <button type="button" id="k2" aria-pressed="false">2 mm</button>
+        <button type="button" id="k3" aria-pressed="true">3 mm</button>
+      </div>
+    </div>
+    <div class="two">
+      <div class="field">
+        <label for="price">Kg fiyatı</label>
+        <div class="inp"><input id="price" inputmode="decimal" autocomplete="off"><span class="unit">TL</span></div>
+      </div>
+      <div class="field">
+        <label for="bar">Boy uzunluğu</label>
+        <div class="inp"><input id="bar" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="grip">Bağlama payı</label>
+      <div class="inp"><input id="grip" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
+      <span class="hint">Boyun sonunda aynada kalan, işlenemeyen kısım. Hurdaya sayılır.</span>
+    </div>
+    <div class="err" id="err" role="alert"></div>
+  </section>
+
+  <section aria-label="Sonuçlar">
+    <div class="sheet" style="padding:0;border:0;background:transparent">
+      <div class="block" style="background:var(--sheet)">
+        <div class="hero">
+          <div class="price"><div class="k">Parça birim fiyatı</div><div class="big" id="rUnit">–</div></div>
+          <div><div class="k">Gereken boy</div><div class="big" id="rBars">–</div></div>
+        </div>
+        <div class="rows">
+          <div><div class="k">Bir boydan çıkan</div><div class="v" id="rPer">–</div></div>
+          <div><div class="k">Toplam maliyet</div><div class="v" id="rCost">–</div></div>
+          <div><div class="k">Ham parça ağırlığı</div><div class="v" id="rPart">–</div></div>
+          <div><div class="k">Bitmiş parça ağırlığı</div><div class="v" id="rFin">–</div></div>
+          <div><div class="k">Parça başı harcanan</div><div class="v" id="rPerPiece">–</div></div>
+          <div><div class="k">Toplam malzeme</div><div class="v" id="rTotal">–</div></div>
+          <div><div class="k">Toplam hurda</div><div class="v scrapv" id="rScrap">–</div></div>
+          <div><div class="k">Talaş</div><div class="v" id="rChip">–</div></div>
+          <div><div class="k">Kesme payı hurdası</div><div class="v" id="rKerf">–</div></div>
+          <div><div class="k">Boy sonu artıkları</div><div class="v" id="rLeft">–</div></div>
+          <div><div class="k">Bir boyun ağırlığı</div><div class="v" id="rBarW">–</div></div>
+          <div><div class="k">Metre ağırlığı</div><div class="v" id="rKgm">–</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sheet plan">
+      <h2>Kesim planı</h2>
+      <div id="plan"></div>
+      <div class="legend">
+        <span><i style="background:var(--part)"></i>Parça</span>
+        <span><i style="background:var(--cut)"></i>Kesme payı</span>
+        <span><i style="background:var(--scrap)"></i>Artık</span>
+        <span><i style="background:repeating-linear-gradient(45deg,var(--scrap) 0 3px,var(--muted) 3px 5px)"></i>Bağlama payı</span>
+      </div>
+      <p class="note">Ham parça, kesilmiş çubuğun ağırlığıdır. Hurda; talaş, kesme payları, bağlama payları ve boy sonlarında kalan artıkların toplamıdır. Birim fiyat, satın alınan boyların tamamının maliyetinin adede bölünmesiyle bulunur.</p>
+    </div>
+  </section>
+</div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const KEY = 'torna-hesap-v1';
+  const def = {shape:'hex', size:'20', mat:'7.85', rho:'7,85', len:'45', qty:'100', kerf:3, price:'60', bar:'3000', fin:'', grip:'50'};
+  let s = Object.assign({}, def);
+  try { const raw = localStorage.getItem(KEY); if (raw) s = Object.assign(s, JSON.parse(raw)); } catch(e) {}
+
+  const num = v => { const n = parseFloat(String(v).trim().replace(/\./g,'').replace(',', '.')); return isFinite(n) ? n : NaN; };
+  // allow both "12.5" and "12,5": if only a dot and no comma, treat dot as decimal
+  const parse = v => { v = String(v).trim(); if (v.indexOf(',') === -1) { const n = parseFloat(v); return isFinite(n) ? n : NaN; } return num(v); };
+  const f = (n, d=0) => n.toLocaleString('tr-TR', {minimumFractionDigits:d, maximumFractionDigits:d});
+  const g = n => n >= 10000 ? f(n/1000, 2) + ' <small>kg</small>' : f(n, n < 100 ? 1 : 0) + ' <small>g</small>';
+  const tl = n => f(n, 2) + ' <small>TL</small>';
+
+  const ids = ['size','rho','len','qty','price','bar','fin','grip'];
+  ids.forEach(id => { $(id).value = s[id]; $(id).addEventListener('input', () => { s[id] = $(id).value; update(); }); });
+  $('mat').value = s.mat;
+  $('mat').addEventListener('change', () => { s.mat = $('mat').value; update(); });
+  $('bHex').onclick = () => { s.shape = 'hex'; update(); };
+  $('bRound').onclick = () => { s.shape = 'round'; update(); };
+  $('k2').onclick = () => { s.kerf = 2; update(); };
+  $('k3').onclick = () => { s.kerf = 3; update(); };
+
+  function drawSection(shape, val){
+    const txt = isFinite(val) && val > 0 ? f(val, val % 1 ? 1 : 0) : '?';
+    const cx = 120, cy = 110;
+    let body = '';
+    const hatch = `<defs><pattern id="h" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="8" stroke="var(--dykem)" stroke-width="1.2" opacity=".55"/></pattern>
+      <marker id="a" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M0,1.5 L10,5 L0,8.5 z" fill="var(--ink)"/></marker></defs>`;
+    const center = `<g stroke="var(--muted)" stroke-width="1" stroke-dasharray="14 3 2 3"><line x1="${cx-95}" y1="${cy}" x2="${cx+95}" y2="${cy}"/><line x1="${cx}" y1="${cy-95}" x2="${cx}" y2="${cy+95}"/></g>`;
+    if (shape === 'hex'){
+      const h = 75, R = h * 2 / Math.sqrt(3);
+      const pts = [0,60,120,180,240,300].map(a => { const r = a*Math.PI/180; return (cx + R*Math.cos(r)).toFixed(1)+','+(cy + R*Math.sin(r)).toFixed(1); }).join(' ');
+      const xr = cx + R/2, dx = cx + R + 22;
+      body = `<polygon points="${pts}" fill="url(#h)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>${center}
+        <g stroke="var(--ink)" stroke-width="1"><line x1="${xr+4}" y1="${cy-h}" x2="${dx+8}" y2="${cy-h}"/><line x1="${xr+4}" y1="${cy+h}" x2="${dx+8}" y2="${cy+h}"/>
+        <line x1="${dx}" y1="${cy-h}" x2="${dx}" y2="${cy+h}" marker-start="url(#a)" marker-end="url(#a)"/></g>
+        <text x="${dx+12}" y="${cy}" transform="rotate(-90 ${dx+12} ${cy})" text-anchor="middle" dy="-2" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">${txt} mm</text>`;
+    } else {
+      const r = 80;
+      body = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#h)" stroke="var(--ink)" stroke-width="2.5"/>${center}
+        <line x1="${cx - r*0.7071}" y1="${cy + r*0.7071}" x2="${cx + r*0.7071}" y2="${cy - r*0.7071}" stroke="var(--ink)" stroke-width="1" marker-start="url(#a)" marker-end="url(#a)"/>
+        <line x1="${cx + r*0.7071}" y1="${cy - r*0.7071}" x2="${cx + r*0.7071 + 22}" y2="${cy - r*0.7071 - 22}" stroke="var(--ink)" stroke-width="1"/>
+        <line x1="${cx + r*0.7071 + 22}" y1="${cy - r*0.7071 - 22}" x2="${cx + r*0.7071 + 72}" y2="${cy - r*0.7071 - 22}" stroke="var(--ink)" stroke-width="1"/>
+        <text x="${cx + r*0.7071 + 26}" y="${cy - r*0.7071 - 28}" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">Ø${txt}</text>`;
+    }
+    $('drawing').innerHTML = `<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">${hatch}${body}</svg>`;
+  }
+
+  function barSvg(B, use, L, k, n, G){
+    const W = 1000, H = 34, sc = W / B;
+    let x = 0, out = '';
+    for (let i = 0; i < n; i++){
+      const pw = L*sc, kw = Math.max(k*sc, 1);
+      out += `<rect x="${x.toFixed(2)}" y="0" width="${Math.max(pw-0.5,0.5).toFixed(2)}" height="${H}" fill="var(--part)"/>`;
+      x += pw;
+      out += `<rect x="${x.toFixed(2)}" y="0" width="${kw.toFixed(2)}" height="${H}" fill="var(--cut)"/>`;
+      x += k*sc;
+    }
+    const gx = W - G*sc;
+    if (x < gx) out += `<rect x="${x.toFixed(2)}" y="0" width="${(gx-x).toFixed(2)}" height="${H}" fill="var(--scrap)"/>`;
+    if (G > 0) out += `<defs><pattern id="gh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--scrap)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="2.5"/></pattern></defs><rect x="${Math.max(gx,x).toFixed(2)}" y="0" width="${(W-Math.max(gx,x)).toFixed(2)}" height="${H}" fill="url(#gh)"/>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:34px" role="img" aria-label="${n} parça"><rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/>${out}<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+  }
+
+  function clear(){
+    ['rUnit','rBars','rPer','rCost','rPart','rFin','rChip','rPerPiece','rTotal','rScrap','rKerf','rLeft','rBarW','rKgm'].forEach(id => $(id).innerHTML = '–');
+    $('plan').innerHTML = '';
+  }
+
+  function update(){
+    $('bHex').setAttribute('aria-pressed', s.shape === 'hex');
+    $('bRound').setAttribute('aria-pressed', s.shape === 'round');
+    $('k2').setAttribute('aria-pressed', s.kerf === 2);
+    $('k3').setAttribute('aria-pressed', s.kerf === 3);
+    $('sizeLbl').textContent = s.shape === 'hex' ? 'İki karşılıklı kenar arası' : 'Çap';
+    $('rhoField').hidden = s.mat !== 'other';
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch(e) {}
+
+    const size = parse(s.size), L = parse(s.len), qty = parse(s.qty), price = parse(s.price), B = parse(s.bar), k = s.kerf;
+    const rho = s.mat === 'other' ? parse(s.rho) : parseFloat(s.mat);
+    drawSection(s.shape, size);
+
+    const errs = [];
+    if (!(size > 0)) errs.push(s.shape === 'hex' ? 'Karşılıklı kenar ölçüsünü girin.' : 'Çapı girin.');
+    if (!(rho > 0)) errs.push('Yoğunluğu girin.');
+    if (!(L > 0)) errs.push('Parça boyunu girin.');
+    if (!(qty > 0) || qty % 1) errs.push('Adet tam sayı ve sıfırdan büyük olmalı.');
+    if (!(price >= 0) || String(s.price).trim() === '') errs.push('Kg fiyatını girin.');
+    if (!(B > 0)) errs.push('Boy uzunluğunu girin.');
+    const G = String(s.grip).trim() === '' ? 0 : parse(s.grip);
+    if (!(G >= 0)) errs.push('Bağlama payı geçerli bir sayı olmalı (yoksa 0 yazın).');
+    if (L > 0 && B > 0 && G >= 0 && L + k > B - G) errs.push('Parça boyu ile kesme payının toplamı, bağlama payı düşüldükten sonra kalan boydan uzun olamaz.');
+    const finRaw = String(s.fin || '').trim();
+    const fin = finRaw === '' ? null : parse(finRaw);
+    if (fin !== null && !(fin > 0)) errs.push('Bitmiş parça ağırlığı sıfırdan büyük olmalı ya da boş bırakılmalı.');
+    if (fin !== null && fin > 0 && size > 0 && L > 0 && rho > 0) {
+      const A0 = s.shape === 'hex' ? Math.sqrt(3)/2 * size*size : Math.PI * size*size / 4;
+      const raw0 = A0 * L * rho / 1000;
+      if (fin > raw0) errs.push('Bitmiş parça, ham parçadan (' + f(raw0, 1) + ' g) ağır olamaz. Ölçüleri veya ağırlığı kontrol edin.');
+    }
+    $('err').innerHTML = errs.join('<br>');
+    if (errs.length){ clear(); return; }
+
+    const A = s.shape === 'hex' ? Math.sqrt(3)/2 * size*size : Math.PI * size*size / 4; // mm²
+    const gpm = rho / 1000; // g per mm³
+    const use = L + k;
+    const per = Math.floor((B - G) / use);
+    const bars = Math.ceil(qty / per);
+    const partG = A * L * gpm;
+    const barG = A * B * gpm;
+    const totalG = bars * barG;
+    const kerfG = qty * k * A * gpm;
+    const leftG = totalG - qty * partG - kerfG;
+    const finG = fin === null ? null : fin;
+    const chipG = finG === null ? 0 : qty * (partG - finG);
+    const scrapG = kerfG + leftG + chipG;
+    const cost = totalG / 1000 * price;
+    const lastN = qty - (bars - 1) * per;
+    const fullLeft = B - per * use;
+    const lastLeft = B - lastN * use;
+
+    $('rUnit').innerHTML = f(cost / qty, 2) + ' TL';
+    $('rBars').innerHTML = f(bars) + ' boy';
+    $('rPer').innerHTML = f(per) + ' <small>adet</small>';
+    $('rCost').innerHTML = tl(cost);
+    $('rPart').innerHTML = g(partG);
+    $('rFin').innerHTML = finG === null ? '<small>girilmedi</small>' : g(finG);
+    $('rChip').innerHTML = finG === null ? '<small>girilmedi</small>' : g(chipG) + ' <small>(' + f(partG - finG, 1) + ' g/parça)</small>';
+    $('rPerPiece').innerHTML = g(totalG / qty);
+    $('rTotal').innerHTML = g(totalG);
+    $('rScrap').innerHTML = g(scrapG) + ' <small>%' + f(scrapG / totalG * 100, 1) + '</small>';
+    $('rKerf').innerHTML = g(kerfG);
+    $('rLeft').innerHTML = g(leftG);
+    $('rBarW').innerHTML = g(barG);
+    $('rKgm').innerHTML = f(A * 1000 * gpm / 1000, 3) + ' <small>kg/m</small>';
+
+    let html = '';
+    if (bars > 1){
+      html += `<div class="planrow"><div class="lbl"><b>Tam boy × ${f(bars-1)}</b> — ${f(per)} parça, artık ${f(fullLeft, fullLeft % 1 ? 1 : 0)} mm (bağlama payı dahil)</div>${barSvg(B, use, L, k, per, G)}</div>`;
+    }
+    html += `<div class="planrow"><div class="lbl"><b>${bars > 1 ? 'Son boy' : 'Tek boy'}</b> — ${f(lastN)} parça, artık ${f(lastLeft, lastLeft % 1 ? 1 : 0)} mm (bağlama payı dahil)</div>${barSvg(B, use, L, k, lastN, G)}</div>`;
+    $('plan').innerHTML = html;
+  }
+
+  update();
+})();
+</script>
+</body>
+</html>
