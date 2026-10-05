@@ -66,15 +66,15 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
 /* title block */
 .block{border:2px solid var(--ink)}
 .block .hero{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--ink)}
-.block .hero div{padding:12px 14px}
-.block .hero div+div{border-left:1.5px solid var(--ink)}
+.block .hero>div{padding:12px 14px}
+.block .hero>div+div{border-left:1.5px solid var(--ink)}
 .block .k{font-size:14px;color:var(--muted)}
 .block .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(30px,7vw,44px);line-height:1.05}
 .block .hero .price .big{color:var(--dykem)}
 .rows{display:grid;grid-template-columns:1fr 1fr}
-.rows div{padding:9px 14px;border-top:1px solid var(--rule)}
-.rows div:nth-child(-n+2){border-top:0}
-.rows div:nth-child(odd){border-right:1px solid var(--rule)}
+.rows>div{padding:9px 14px;border-top:1px solid var(--rule)}
+.rows>div:nth-child(-n+2){border-top:0}
+.rows>div:nth-child(odd){border-right:1px solid var(--rule)}
 .rows .v{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:22px;line-height:1.15}
 .rows .v small{font-family:"Barlow",sans-serif;font-weight:500;font-size:14px;color:var(--muted)}
 .rows .scrapv{color:var(--cut)}
