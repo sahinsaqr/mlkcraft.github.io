@@ -1,8 +1,9 @@
 // Torna Hesap service worker. Kapsamı yalnızca /araclar/torna/ — sitenin geri kalanına dokunmaz.
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'torna-hesap-' + VERSION;
 const BASE = '/araclar/torna/';
-const PRECACHE = [BASE, BASE + 'manifest.json', BASE + 'icon-180.png', BASE + 'icon-192.png', BASE + 'icon-512.png'];
+const LOGO = ['/assets/logo-mark.png', '/assets/logo-text.png'];
+const PRECACHE = [BASE, BASE + 'manifest.json', BASE + 'icon-180.png', BASE + 'icon-192.png', BASE + 'icon-512.png', ...LOGO];
 const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap';
 const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
@@ -50,8 +51,8 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Yalnızca bu aracın kendi dosyaları; diğer her istek tarayıcıya bırakılır.
-  if (url.origin !== self.location.origin || !url.pathname.startsWith(BASE)) return;
+  // Yalnızca bu aracın kendi dosyaları ve sayfadaki logo; diğer her istek tarayıcıya bırakılır.
+  if (url.origin !== self.location.origin || !(url.pathname.startsWith(BASE) || LOGO.includes(url.pathname))) return;
 
   // Ağ öncelikli: çevrimiçiyken her zaman en yeni sürüm gelir, çevrimdışıyken önbellek kullanılır.
   event.respondWith((async () => {
