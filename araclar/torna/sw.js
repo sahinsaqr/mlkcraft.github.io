@@ -1,10 +1,10 @@
 // Torna Hesap service worker. Kapsamı yalnızca /araclar/torna/ — sitenin geri kalanına dokunmaz.
-const VERSION = 'v2';
+const VERSION = 'v3';
 const CACHE = 'torna-hesap-' + VERSION;
 const BASE = '/araclar/torna/';
 const LOGO = ['/assets/logo-mark.png', '/assets/logo-text.png'];
 const PRECACHE = [BASE, BASE + 'manifest.json', BASE + 'icon-180.png', BASE + 'icon-192.png', BASE + 'icon-512.png', ...LOGO];
-const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap';
+const FONT_CSS = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap';
 const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
 async function precacheFonts(cache) {

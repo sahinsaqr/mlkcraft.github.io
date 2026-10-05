@@ -6,49 +6,41 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Torna Hesap">
+<meta name="theme-color" content="#050914">
 <title>Torna malzeme hesabı</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#E9ECEA; --sheet:#F7F8F6; --ink:#1E2932; --muted:#5B6770; --rule:#B9C1C4;
-  --dykem:#1E4E9C; --dykem-soft:#D7E1F1; --cut:#D2461E; --part:#7C8C98; --scrap:#C9CFD2;
+  --paper:#050914; --field:#0a1224; --sheet:#0e1830; --ink:#e8eeff; --muted:#8c9aba;
+  --rule:rgba(120,150,220,.16); --border:rgba(120,150,220,.14); --border-strong:rgba(120,150,220,.28);
+  --dykem:#4f8cff; --dykem-2:#8b5cf6; --dykem-soft:rgba(79,140,255,.25);
+  --cut:#ff7a45; --part:#3566cc; --scrap:#26324d;
+  --radius:22px; --radius-sm:12px;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#161C21; --sheet:#1E262C; --ink:#E4E9EC; --muted:#9AA6AE; --rule:#3A464E;
-    --dykem:#6E9BE6; --dykem-soft:#22344F; --cut:#F06A40; --part:#8D9DA9; --scrap:#46525A;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#161C21; --sheet:#1E262C; --ink:#E4E9EC; --muted:#9AA6AE; --rule:#3A464E;
-  --dykem:#6E9BE6; --dykem-soft:#22344F; --cut:#F06A40; --part:#8D9DA9; --scrap:#46525A;
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:inherit}
 [hidden]{display:none!important}
 html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
+body{margin:0;min-height:100vh;background:radial-gradient(900px 520px at 10% -10%,rgba(79,140,255,.16),transparent 60%),radial-gradient(760px 460px at 100% 0%,rgba(139,92,246,.13),transparent 60%),var(--paper);background-repeat:no-repeat;color:var(--ink);font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
 .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 40px}
-header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:18px}
-h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1;margin:0;letter-spacing:.01em}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border-strong);padding-bottom:12px;margin-bottom:18px}
+h1{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:clamp(28px,5vw,40px);line-height:1.05;margin:0;letter-spacing:-.02em}
 header p{margin:0;color:var(--muted);font-size:14px;text-align:right}
 .grid{display:grid;gap:18px}
 @media (min-width:860px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}}
-.sheet{background:var(--sheet);border:1px solid var(--rule);padding:16px}
-h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:22px;margin:0 0 12px}
-.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden}
-.seg button{appearance:none;border:0;background:transparent;color:var(--ink);font:600 16px "Barlow",sans-serif;padding:11px 8px;min-height:44px;cursor:pointer}
-.seg button+button{border-left:1.5px solid var(--ink)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--sheet)}
+.sheet{background:linear-gradient(180deg,var(--sheet),var(--field));border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:21px;letter-spacing:-.01em;margin:0 0 12px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--border-strong);border-radius:var(--radius-sm);overflow:hidden;background:var(--field)}
+.seg button{appearance:none;border:0;background:transparent;color:var(--ink);font:600 15px "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:11px 8px;min-height:44px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--border-strong)}
+.seg button[aria-pressed="true"]{background:linear-gradient(135deg,var(--dykem),var(--dykem-2));color:#fff}
 .seg button:focus-visible{outline:3px solid var(--dykem);outline-offset:-3px}
 .drawing{margin:14px 0 6px;display:flex;justify-content:center}
 .drawing svg{width:100%;max-width:300px;height:auto}
@@ -56,27 +48,27 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
 .field label{font-weight:500;font-size:15px}
 .field .hint{color:var(--muted);font-size:13px}
 .inp{position:relative}
-.inp input,.inp select{width:100%;font:500 18px "Barlow",sans-serif;color:var(--ink);background:var(--paper);border:1.5px solid var(--rule);border-radius:6px;padding:10px 52px 10px 12px;min-height:46px;appearance:none;-webkit-appearance:none}
+.inp input,.inp select{width:100%;font:500 17px "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--field);border:1px solid var(--border-strong);border-radius:var(--radius-sm);padding:10px 52px 10px 12px;min-height:46px;appearance:none;-webkit-appearance:none}
 .inp select{padding-right:36px;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 12px) 20px;background-size:6px 6px;background-repeat:no-repeat}
 .inp input:focus,.inp select:focus{outline:none;border-color:var(--dykem);box-shadow:0 0 0 3px var(--dykem-soft)}
 .inp .unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
-.err{margin-top:14px;border-left:4px solid var(--cut);background:color-mix(in srgb,var(--cut) 10%,transparent);padding:10px 12px;font-size:15px}
+.err{margin-top:14px;border-left:4px solid var(--cut);border-radius:6px;background:color-mix(in srgb,var(--cut) 12%,transparent);padding:10px 12px;font-size:15px}
 .err:empty{display:none}
 /* title block */
-.block{border:2px solid var(--ink)}
-.block .hero{display:grid;grid-template-columns:1fr 1fr;border-bottom:2px solid var(--ink)}
-.block .hero>div{padding:12px 14px}
-.block .hero>div+div{border-left:1.5px solid var(--ink)}
+.block{border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,.35)}
+.block .hero{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border-strong);background:linear-gradient(135deg,rgba(79,140,255,.12),rgba(139,92,246,.10))}
+.block .hero>div{padding:14px 16px}
+.block .hero>div+div{border-left:1px solid var(--border-strong)}
 .block .k{font-size:14px;color:var(--muted)}
-.block .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:clamp(30px,7vw,44px);line-height:1.05}
+.block .big{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:clamp(28px,6.5vw,42px);line-height:1.1;letter-spacing:-.02em}
 .block .hero .price .big{color:var(--dykem)}
 .rows{display:grid;grid-template-columns:1fr 1fr}
-.rows>div{padding:9px 14px;border-top:1px solid var(--rule)}
+.rows>div{padding:10px 16px;border-top:1px solid var(--rule)}
 .rows>div:nth-child(-n+2){border-top:0}
 .rows>div:nth-child(odd){border-right:1px solid var(--rule)}
-.rows .v{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:22px;line-height:1.15}
-.rows .v small{font-family:"Barlow",sans-serif;font-weight:500;font-size:14px;color:var(--muted)}
+.rows .v{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:600;font-size:20px;line-height:1.25}
+.rows .v small{font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:500;font-size:14px;color:var(--muted)}
 .rows .scrapv{color:var(--cut)}
 .plan{margin-top:18px}
 .plan svg{display:block;width:100%;height:auto}
@@ -85,16 +77,14 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
 .planrow .lbl b{font-weight:600}
 .legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:14px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{display:inline-block;width:14px;height:14px;border:1px solid var(--ink)}
+.legend i{display:inline-block;width:14px;height:14px;border:1px solid var(--border-strong);border-radius:3px}
 .note{margin-top:14px;font-size:13px;color:var(--muted)}
 .logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:12px;text-decoration:none}
 .logo img{height:auto;transition:filter .3s,transform .3s}
 .logo-mark{width:44px;filter:drop-shadow(0 0 8px rgba(34,211,238,.35))}
-.logo-text{width:60px;filter:brightness(.2)}
+.logo-text{width:60px}
 .logo:hover .logo-mark{filter:drop-shadow(0 0 12px rgba(34,211,238,.6));transform:rotate(-4deg)}
 .logo:focus-visible{outline:3px solid var(--dykem);outline-offset:4px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo-text{filter:none}}
-:root[data-theme="dark"] .logo-text{filter:none}
 @media (prefers-reduced-motion:no-preference){.drawing svg *{transition:all .25s ease}}
 </style>
 </head>
@@ -258,14 +248,14 @@ h2{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font
       body = `<polygon points="${pts}" fill="url(#h)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>${center}
         <g stroke="var(--ink)" stroke-width="1"><line x1="${xr+4}" y1="${cy-h}" x2="${dx+8}" y2="${cy-h}"/><line x1="${xr+4}" y1="${cy+h}" x2="${dx+8}" y2="${cy+h}"/>
         <line x1="${dx}" y1="${cy-h}" x2="${dx}" y2="${cy+h}" marker-start="url(#a)" marker-end="url(#a)"/></g>
-        <text x="${dx+12}" y="${cy}" transform="rotate(-90 ${dx+12} ${cy})" text-anchor="middle" dy="-2" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">${txt} mm</text>`;
+        <text x="${dx+12}" y="${cy}" transform="rotate(-90 ${dx+12} ${cy})" text-anchor="middle" dy="-2" font-family="Space Grotesk, Segoe UI, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">${txt} mm</text>`;
     } else {
       const r = 80;
       body = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="url(#h)" stroke="var(--ink)" stroke-width="2.5"/>${center}
         <line x1="${cx - r*0.7071}" y1="${cy + r*0.7071}" x2="${cx + r*0.7071}" y2="${cy - r*0.7071}" stroke="var(--ink)" stroke-width="1" marker-start="url(#a)" marker-end="url(#a)"/>
         <line x1="${cx + r*0.7071}" y1="${cy - r*0.7071}" x2="${cx + r*0.7071 + 22}" y2="${cy - r*0.7071 - 22}" stroke="var(--ink)" stroke-width="1"/>
         <line x1="${cx + r*0.7071 + 22}" y1="${cy - r*0.7071 - 22}" x2="${cx + r*0.7071 + 72}" y2="${cy - r*0.7071 - 22}" stroke="var(--ink)" stroke-width="1"/>
-        <text x="${cx + r*0.7071 + 26}" y="${cy - r*0.7071 - 28}" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">Ø${txt}</text>`;
+        <text x="${cx + r*0.7071 + 26}" y="${cy - r*0.7071 - 28}" font-family="Space Grotesk, Segoe UI, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">Ø${txt}</text>`;
     }
     $('drawing').innerHTML = `<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">${hatch}${body}</svg>`;
   }
