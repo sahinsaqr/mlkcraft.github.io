@@ -1,5 +1,5 @@
 // Torna Hesap service worker. Kapsamı yalnızca /araclar/torna/ — sitenin geri kalanına dokunmaz.
-const VERSION = 'v3';
+const VERSION = 'v4';
 const CACHE = 'torna-hesap-' + VERSION;
 const BASE = '/araclar/torna/';
 const LOGO = ['/assets/logo-mark.png', '/assets/logo-text.png'];

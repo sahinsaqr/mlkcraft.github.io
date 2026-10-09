@@ -12,6 +12,13 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://mlkcraft.com/assets/logo.png">
   <link rel="canonical" href="https://mlkcraft.com/privacy">
+  <link rel="alternate" hreflang="tr" href="https://mlkcraft.com/privacy">
+  <link rel="alternate" hreflang="en" href="https://mlkcraft.com/en/privacy">
+  <link rel="alternate" hreflang="x-default" href="https://mlkcraft.com/privacy">
+  <script>
+    // Eski ?lang=en / #en bağlantıları İngilizce sayfaya gider.
+    if (/[?&]lang=en\b/.test(location.search) || location.hash === '#en') location.replace('/en/privacy.html');
+  </script>
   <link rel="icon" href="assets/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
@@ -102,17 +109,11 @@
     }
     .page-head .meta { color: var(--muted); font-size: .95rem; }
 
-    .lang-switch {
-      display: inline-flex; gap: 4px; margin-top: 26px; padding: 4px;
-      border-radius: 999px; background: rgba(14,24,48,0.6); border: 1px solid var(--border);
-    }
-    .lang-switch button {
-      font: inherit; font-size: .9rem; font-weight: 500; cursor: pointer;
-      padding: 7px 18px; border-radius: 999px; border: 0; color: var(--muted); background: transparent;
-      transition: color .2s, background .2s;
-    }
-    .lang-switch button:hover { color: var(--text); }
-    .lang-switch button[aria-pressed="true"] { color: #fff; background: var(--accent); }
+    /* ---------- Language switch ---------- */
+    .lang-sel { display: flex; align-items: center; gap: 2px; margin-left: 6px; font-size: .85rem; font-weight: 600; letter-spacing: .5px; color: var(--border-strong); }
+    .nav-links .lang-sel a { padding: 6px 7px; border-radius: 8px; color: var(--muted); background: none; }
+    .nav-links .lang-sel a:hover { color: var(--text); }
+    .nav-links .lang-sel a[aria-current="true"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
 
     /* ---------- Policy body ---------- */
     .policy-wrap { max-width: 860px; margin: 0 auto 40px; }
@@ -170,6 +171,7 @@
       .container { padding: 0 16px; }
       .nav-links a { padding: 8px 10px; font-size: .9rem; }
       .nav-links .home-link { display: none; }
+      .lang-sel { margin-left: 0; }
       .page-head { padding: 120px 0 32px; }
       .policy { padding: 32px 22px; border-radius: 18px; }
       .contact-box { padding: 22px 20px; }
@@ -191,8 +193,11 @@
         <img class="logo-text" src="assets/logo-text.png" width="60" height="34" alt="MLK Craft">
       </a>
       <ul class="nav-links">
-        <li><a href="/" class="home-link" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a></li>
-        <li><a href="mailto:info@mlkcraft.com" class="nav-cta" data-tr="Bize Ulaşın" data-en="Contact Us">Bize Ulaşın</a></li>
+        <li><a href="/" class="home-link">Ana Sayfa</a></li>
+        <li><a href="mailto:info@mlkcraft.com" class="nav-cta">Bize Ulaşın</a></li>
+        <li class="lang-sel" role="group" aria-label="Dil / Language">
+          <a href="/privacy.html" lang="tr" hreflang="tr" aria-current="true">TR</a><span aria-hidden="true">|</span><a href="/en/privacy.html" lang="en" hreflang="en">EN</a>
+        </li>
       </ul>
     </div>
   </header>
@@ -200,18 +205,14 @@
   <main>
     <div class="container">
       <div class="page-head">
-        <span class="eyebrow" data-tr="Yasal" data-en="Legal">Yasal</span>
-        <h1><span class="gradient-text" data-tr="Gizlilik Politikası" data-en="Privacy Policy">Gizlilik Politikası</span></h1>
-        <p class="meta" data-tr="Son güncelleme: 9 Ekim 2026" data-en="Last updated: October 9, 2026">Son güncelleme: 9 Ekim 2026</p>
-        <div class="lang-switch" role="group" aria-label="Dil / Language">
-          <button type="button" data-lang="tr" aria-pressed="true">Türkçe</button>
-          <button type="button" data-lang="en" aria-pressed="false">English</button>
-        </div>
+        <span class="eyebrow">Yasal</span>
+        <h1><span class="gradient-text">Gizlilik Politikası</span></h1>
+        <p class="meta">Son güncelleme: 9 Ekim 2026</p>
       </div>
 
       <div class="policy-wrap">
         <!-- ================= TÜRKÇE ================= -->
-        <article class="policy" id="policy-tr" lang="tr">
+        <article class="policy">
           <p class="intro">
             Bu Gizlilik Politikası, <strong>MLK Craft</strong> ("MLK Craft", "biz") tarafından geliştirilen ve yayınlanan
             mobil oyunlar, mobil ve web uygulamaları, e-ticaret platformları, yazılımlar ve <a href="https://mlkcraft.com">mlkcraft.com</a>
@@ -301,107 +302,15 @@
             </a>
           </div>
         </article>
-
-        <!-- ================= ENGLISH ================= -->
-        <article class="policy" id="policy-en" lang="en" hidden>
-          <p class="intro">
-            This Privacy Policy applies to the mobile games, mobile and web applications, e-commerce platforms, software and the
-            <a href="https://mlkcraft.com">mlkcraft.com</a> website (together, the "Services") developed and published by
-            <strong>MLK Craft</strong> ("MLK Craft", "we", "us"). By using our Services, you agree to the practices described in this policy.
-          </p>
-
-          <h2><span class="num">01</span> Information We Collect</h2>
-          <h3>Information you provide</h3>
-          <ul>
-            <li>When you create an account: username, email address and sign-in details (e.g. Sign in with Google).</li>
-            <li>For e-commerce orders: name, shipping/billing address, phone number and order history.</li>
-            <li>When you use social features in our games: your player name, avatar, scores and the messages you post in club chat. These are visible to other players in leaderboards and clubs.</li>
-            <li>When you email us: the content of your message and your contact details.</li>
-          </ul>
-          <h3>Information collected automatically</h3>
-          <ul>
-            <li>Device information: device model, operating system version, language and region settings.</li>
-            <li>App usage data: session length, game progress, scores, interactions and in-app events.</li>
-            <li>Identifiers: Advertising ID, Firebase installation ID and anonymous user IDs.</li>
-            <li>Diagnostics: crash logs and performance data.</li>
-            <li>Approximate location: country/city-level information derived from your IP address. We do not collect precise (GPS) location.</li>
-          </ul>
-
-          <h2><span class="num">02</span> How We Use Information</h2>
-          <ul>
-            <li>To provide and operate the Services and save your game progress, scores and preferences.</li>
-            <li>To process and deliver orders and provide customer support.</li>
-            <li>To detect and fix bugs and improve performance and user experience.</li>
-            <li>To show in-app advertising and measure its performance.</li>
-            <li>To send notifications where you have given permission.</li>
-            <li>To prevent fraud and abuse and to comply with legal obligations.</li>
-          </ul>
-
-          <h2><span class="num">03</span> Firebase (Google) Services</h2>
-          <p>Our apps may use <strong>Firebase</strong> services provided by Google LLC:</p>
-          <ul>
-            <li><strong>Firebase Authentication:</strong> secure account creation and sign-in.</li>
-            <li><strong>Cloud Firestore / Realtime Database:</strong> storing game progress, leaderboards and user data.</li>
-            <li><strong>Google Analytics for Firebase:</strong> anonymous usage statistics.</li>
-            <li><strong>Firebase Crashlytics:</strong> crash and error reports.</li>
-            <li><strong>Firebase Remote Config:</strong> updating app settings remotely.</li>
-            <li><strong>Firebase Cloud Messaging:</strong> push notifications.</li>
-          </ul>
-          <p>Learn how these services handle data: <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Privacy and Security</a> and the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</p>
-
-          <h2><span class="num">04</span> Advertising (Google AdMob)</h2>
-          <p>Our free apps may display ads through <strong>Google AdMob</strong>. AdMob may use your Advertising ID, device information, IP address and ad interaction data to serve personalized or non-personalized ads.</p>
-          <ul>
-            <li>Users in the European Economic Area, the United Kingdom and Switzerland are asked for consent to personalized ads via Google's User Messaging Platform (UMP). You can change your choice in the app settings.</li>
-            <li>On Android you can reset or delete your Advertising ID under <em>Settings → Google → Ads</em>.</li>
-          </ul>
-          <p>More information: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">How Google uses data in advertising</a>.</p>
-
-          <h2><span class="num">05</span> E-Commerce and Payments</h2>
-          <p>Payments in our e-commerce projects are processed by licensed, secure third-party payment providers or Google Play Billing. <strong>Your credit/debit card details are never stored on our servers.</strong> Order information is used only to fulfil orders, arrange shipping and meet legal invoicing obligations, and is shared with shipping carriers only as necessary.</p>
-
-          <h2><span class="num">06</span> Sharing of Information</h2>
-          <p>We <strong>do not sell</strong> your personal data. Your data may only be shared:</p>
-          <ul>
-            <li>With service providers that help us operate the Services (Google/Firebase, AdMob, payment and shipping companies).</li>
-            <li>When required by law, court order or a request from a competent authority.</li>
-            <li>When necessary to protect our rights and the safety of our users and the public.</li>
-          </ul>
-
-          <h2><span class="num">07</span> Data Security and Retention</h2>
-          <p>Your data is encrypted in transit (HTTPS/TLS) and stored on secure infrastructure with access limited to authorized personnel. We keep your data only as long as necessary to provide the Services or as required by law. If you delete your account, your personal data is deleted or anonymized within a reasonable period (no later than 30 days).</p>
-
-          <h2><span class="num">08</span> Your Rights and Data Deletion</h2>
-          <p>Under the Turkish Personal Data Protection Law (KVKK No. 6698) and, where applicable, the GDPR, you have the right to access your data, request its correction or deletion, object to processing and request data portability.</p>
-          <p><strong>Account and data deletion requests:</strong> Use the in-app account deletion option, or email <a href="mailto:info@mlkcraft.com?subject=Data%20Deletion%20Request">info@mlkcraft.com</a> with the name of the app and your account details. We respond to all requests within 30 days.</p>
-
-          <h2><span class="num">09</span> Children's Privacy</h2>
-          <p>Our Services are not directed to children under 13, and we do not knowingly collect personal data from children under 13. Apps intended for children use only family-certified advertising and analytics settings. If you believe a child has provided us with personal data, please contact us and we will delete it promptly.</p>
-
-          <h2><span class="num">10</span> Third-Party Links</h2>
-          <p>Our Services may contain links to third-party websites or services. We are not responsible for their privacy practices and encourage you to review their policies.</p>
-
-          <h2><span class="num">11</span> Changes to This Policy</h2>
-          <p>We may update this policy from time to time. The current version is always published on this page with its "Last updated" date. We will notify you of significant changes in the app or on our website.</p>
-
-          <div class="contact-box">
-            <h2><span class="num">12</span> Contact</h2>
-            <p>For any questions or requests regarding this Privacy Policy or your personal data, contact us at:</p>
-            <a class="mail" href="mailto:info@mlkcraft.com">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
-              info@mlkcraft.com
-            </a>
-          </div>
-        </article>
       </div>
     </div>
   </main>
 
   <footer>
     <div class="container footer-bottom">
-      <span>© <span id="year">2026</span> MLK Craft. <span data-tr="Tüm hakları saklıdır." data-en="All rights reserved.">Tüm hakları saklıdır.</span></span>
+      <span>© <span id="year">2026</span> MLK Craft. Tüm hakları saklıdır.</span>
       <span class="footer-links">
-        <a href="/" data-tr="Ana Sayfa" data-en="Home">Ana Sayfa</a>
+        <a href="/">Ana Sayfa</a>
         <a href="mailto:info@mlkcraft.com">info@mlkcraft.com</a>
       </span>
     </div>
@@ -413,26 +322,6 @@
       function onScroll() { header.classList.toggle('scrolled', window.scrollY > 20); }
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
-
-      // Language switch (TR / EN) — also selectable via ?lang=en or #en
-      var buttons = document.querySelectorAll('.lang-switch button');
-      function setLang(lang) {
-        document.documentElement.lang = lang;
-        document.getElementById('policy-tr').hidden = lang !== 'tr';
-        document.getElementById('policy-en').hidden = lang !== 'en';
-        buttons.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.lang === lang); });
-        document.querySelectorAll('[data-' + lang + ']').forEach(function (el) { el.textContent = el.dataset[lang]; });
-        document.title = (lang === 'en' ? 'Privacy Policy' : 'Gizlilik Politikası') + ' — MLK Craft';
-      }
-      buttons.forEach(function (b) {
-        b.addEventListener('click', function () {
-          setLang(b.dataset.lang);
-          try { history.replaceState(null, '', b.dataset.lang === 'en' ? '?lang=en' : location.pathname); } catch (e) {}
-        });
-      });
-      var wantsEn = /[?&]lang=en\b/.test(location.search) || location.hash === '#en';
-      if (wantsEn) setLang('en');
-
       document.getElementById('year').textContent = new Date().getFullYear();
     })();
   </script>

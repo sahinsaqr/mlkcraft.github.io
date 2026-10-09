@@ -52,6 +52,9 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
 .inp select{padding-right:36px;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 12px) 20px;background-size:6px 6px;background-repeat:no-repeat}
 .inp input:focus,.inp select:focus{outline:none;border-color:var(--dykem);box-shadow:0 0 0 3px var(--dykem-soft)}
 .inp .unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
+.inp.has-cur input{padding-right:84px}
+.inp select.cur{position:absolute;right:1px;top:1px;bottom:1px;width:auto;min-height:0;padding:0 26px 0 10px;font-size:15px;color:var(--muted);background-color:transparent;border:0;border-left:1px solid var(--border-strong);border-radius:0 var(--radius-sm) var(--radius-sm) 0;background-position:calc(100% - 15px) 19px,calc(100% - 10px) 19px;background-size:5px 5px;cursor:pointer}
+.inp select.cur:focus{color:var(--ink)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 .err{margin-top:14px;border-left:4px solid var(--cut);border-radius:6px;background:color-mix(in srgb,var(--cut) 12%,transparent);padding:10px 12px;font-size:15px}
 .err:empty{display:none}
@@ -79,32 +82,43 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{display:inline-block;width:14px;height:14px;border:1px solid var(--border-strong);border-radius:3px}
 .note{margin-top:14px;font-size:13px;color:var(--muted)}
-.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:12px;text-decoration:none}
+.top{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
 .logo img{height:auto;transition:filter .3s,transform .3s}
 .logo-mark{width:44px;filter:drop-shadow(0 0 8px rgba(34,211,238,.35))}
 .logo-text{width:60px}
 .logo:hover .logo-mark{filter:drop-shadow(0 0 12px rgba(34,211,238,.6));transform:rotate(-4deg)}
 .logo:focus-visible{outline:3px solid var(--dykem);outline-offset:4px}
+.lang{display:flex;align-items:center;gap:2px;color:var(--border-strong);font-size:14px}
+.lang button{appearance:none;border:0;background:none;color:var(--muted);font:600 14px "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.5px;padding:8px 7px;min-height:36px;cursor:pointer}
+.lang button:hover{color:var(--ink)}
+.lang button[aria-pressed="true"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--dykem)}
+.lang button:focus-visible{outline:3px solid var(--dykem);outline-offset:2px}
 @media (prefers-reduced-motion:no-preference){.drawing svg *{transition:all .25s ease}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<a href="/" class="logo" aria-label="MLK Craft ana sayfa">
-  <img class="logo-mark" src="/assets/logo-mark.png" width="44" height="53" alt="MLK Craft logosu">
-  <img class="logo-text" src="/assets/logo-text.png" width="60" height="34" alt="MLK Craft">
-</a>
+<div class="top">
+  <a href="/" class="logo" id="logo" aria-label="MLK Craft ana sayfa" data-i18n-aria="home">
+    <img class="logo-mark" src="/assets/logo-mark.png" width="44" height="53" alt="MLK Craft logosu" data-i18n-alt="logoAlt">
+    <img class="logo-text" src="/assets/logo-text.png" width="60" height="34" alt="MLK Craft">
+  </a>
+  <div class="lang" role="group" aria-label="Dil / Language">
+    <button type="button" id="lTr" lang="tr" aria-pressed="true">TR</button><span aria-hidden="true">|</span><button type="button" id="lEn" lang="en" aria-pressed="false">EN</button>
+  </div>
+</div>
 <header>
-  <h1>Torna malzeme hesabı</h1>
-  <p>Boydan kesim, ağırlık ve maliyet</p>
+  <h1 data-i18n="title">Torna malzeme hesabı</h1>
+  <p data-i18n="sub">Boydan kesim, ağırlık ve maliyet</p>
 </header>
 
 <div class="grid">
-  <section class="sheet" aria-label="Girdiler">
-    <h2>Malzeme</h2>
-    <div class="seg" role="group" aria-label="Profil">
-      <button type="button" id="bHex" aria-pressed="true">Altıgen</button>
-      <button type="button" id="bRound" aria-pressed="false">Yuvarlak</button>
+  <section class="sheet" aria-label="Girdiler" data-i18n-aria="inputs">
+    <h2 data-i18n="hMat">Malzeme</h2>
+    <div class="seg" role="group" aria-label="Profil" data-i18n-aria="profile">
+      <button type="button" id="bHex" aria-pressed="true" data-i18n="hex">Altıgen</button>
+      <button type="button" id="bRound" aria-pressed="false" data-i18n="round">Yuvarlak</button>
     </div>
 
     <div class="drawing" id="drawing" aria-hidden="true"></div>
@@ -115,39 +129,39 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
     </div>
 
     <div class="field">
-      <label for="mat">Malzeme türü</label>
+      <label for="mat" data-i18n="mat">Malzeme türü</label>
       <div class="inp"><select id="mat">
-        <option value="7.85">Çelik — 7,85 g/cm³</option>
-        <option value="7.93">Paslanmaz — 7,93 g/cm³</option>
-        <option value="8.50">Pirinç — 8,50 g/cm³</option>
-        <option value="2.70">Alüminyum — 2,70 g/cm³</option>
-        <option value="8.96">Bakır — 8,96 g/cm³</option>
-        <option value="other">Diğer (yoğunluğu gir)</option>
+        <option value="7.85" data-i18n="m785">Çelik — 7,85 g/cm³</option>
+        <option value="7.93" data-i18n="m793">Paslanmaz — 7,93 g/cm³</option>
+        <option value="8.50" data-i18n="m850">Pirinç — 8,50 g/cm³</option>
+        <option value="2.70" data-i18n="m270">Alüminyum — 2,70 g/cm³</option>
+        <option value="8.96" data-i18n="m896">Bakır — 8,96 g/cm³</option>
+        <option value="other" data-i18n="mOther">Diğer (yoğunluğu gir)</option>
       </select></div>
     </div>
     <div class="field" id="rhoField" hidden>
-      <label for="rho">Yoğunluk</label>
+      <label for="rho" data-i18n="rho">Yoğunluk</label>
       <div class="inp"><input id="rho" inputmode="decimal" autocomplete="off"><span class="unit">g/cm³</span></div>
     </div>
 
-    <h2 style="margin-top:22px">Kesim ve sipariş</h2>
+    <h2 style="margin-top:22px" data-i18n="hCut">Kesim ve sipariş</h2>
     <div class="two">
       <div class="field">
-        <label for="len">Parça boyu</label>
+        <label for="len" data-i18n="len">Parça boyu</label>
         <div class="inp"><input id="len" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
       </div>
       <div class="field">
-        <label for="qty">Adet</label>
-        <div class="inp"><input id="qty" inputmode="numeric" autocomplete="off"><span class="unit">ad</span></div>
+        <label for="qty" data-i18n="qty">Adet</label>
+        <div class="inp"><input id="qty" inputmode="numeric" autocomplete="off"><span class="unit" data-i18n="pcs">ad</span></div>
       </div>
     </div>
     <div class="field">
-      <label for="fin">Bitmiş parça ağırlığı</label>
-      <div class="inp"><input id="fin" inputmode="decimal" autocomplete="off" placeholder="Boş bırakılabilir"><span class="unit">g</span></div>
-      <span class="hint">Tornalandıktan sonraki ağırlık. Boş bırakılırsa talaş hesaba katılmaz.</span>
+      <label for="fin" data-i18n="fin">Bitmiş parça ağırlığı</label>
+      <div class="inp"><input id="fin" inputmode="decimal" autocomplete="off" placeholder="Boş bırakılabilir" data-i18n-ph="finPh"><span class="unit">g</span></div>
+      <span class="hint" data-i18n="finHint">Tornalandıktan sonraki ağırlık. Boş bırakılırsa talaş hesaba katılmaz.</span>
     </div>
     <div class="field">
-      <label id="kerfLbl">Kesme ucu kalınlığı</label>
+      <label id="kerfLbl" data-i18n="kerf">Kesme ucu kalınlığı</label>
       <div class="seg" role="group" aria-labelledby="kerfLbl">
         <button type="button" id="k2" aria-pressed="false">2 mm</button>
         <button type="button" id="k3" aria-pressed="true">3 mm</button>
@@ -155,56 +169,60 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
     </div>
     <div class="two">
       <div class="field">
-        <label for="price">Kg fiyatı</label>
-        <div class="inp"><input id="price" inputmode="decimal" autocomplete="off"><span class="unit">TL</span></div>
+        <label for="price" data-i18n="price">Kg fiyatı</label>
+        <div class="inp" id="priceInp"><input id="price" inputmode="decimal" autocomplete="off"><span class="unit" id="priceUnit">TL</span><select id="cur" class="cur" aria-label="Currency" hidden>
+          <option value="TRY">TRY</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </select></div>
       </div>
       <div class="field">
-        <label for="bar">Boy uzunluğu</label>
+        <label for="bar" data-i18n="bar">Boy uzunluğu</label>
         <div class="inp"><input id="bar" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
       </div>
     </div>
     <div class="field">
-      <label for="grip">Bağlama payı</label>
+      <label for="grip" data-i18n="grip">Bağlama payı</label>
       <div class="inp"><input id="grip" inputmode="decimal" autocomplete="off"><span class="unit">mm</span></div>
-      <span class="hint">Boyun sonunda aynada kalan, işlenemeyen kısım. Hurdaya sayılır.</span>
+      <span class="hint" data-i18n="gripHint">Boyun sonunda aynada kalan, işlenemeyen kısım. Hurdaya sayılır.</span>
     </div>
     <div class="err" id="err" role="alert"></div>
   </section>
 
-  <section aria-label="Sonuçlar">
+  <section aria-label="Sonuçlar" data-i18n-aria="results">
     <div class="sheet" style="padding:0;border:0;background:transparent">
       <div class="block" style="background:var(--sheet)">
         <div class="hero">
-          <div class="price"><div class="k">Parça birim fiyatı</div><div class="big" id="rUnit">–</div></div>
-          <div><div class="k">Gereken boy</div><div class="big" id="rBars">–</div></div>
+          <div class="price"><div class="k" data-i18n="kUnit">Parça birim fiyatı</div><div class="big" id="rUnit">–</div></div>
+          <div><div class="k" data-i18n="kBars">Gereken boy</div><div class="big" id="rBars">–</div></div>
         </div>
         <div class="rows">
-          <div><div class="k">Bir boydan çıkan</div><div class="v" id="rPer">–</div></div>
-          <div><div class="k">Toplam maliyet</div><div class="v" id="rCost">–</div></div>
-          <div><div class="k">Ham parça ağırlığı</div><div class="v" id="rPart">–</div></div>
-          <div><div class="k">Bitmiş parça ağırlığı</div><div class="v" id="rFin">–</div></div>
-          <div><div class="k">Parça başı harcanan</div><div class="v" id="rPerPiece">–</div></div>
-          <div><div class="k">Toplam malzeme</div><div class="v" id="rTotal">–</div></div>
-          <div><div class="k">Toplam hurda</div><div class="v scrapv" id="rScrap">–</div></div>
-          <div><div class="k">Talaş</div><div class="v" id="rChip">–</div></div>
-          <div><div class="k">Kesme payı hurdası</div><div class="v" id="rKerf">–</div></div>
-          <div><div class="k">Boy sonu artıkları</div><div class="v" id="rLeft">–</div></div>
-          <div><div class="k">Bir boyun ağırlığı</div><div class="v" id="rBarW">–</div></div>
-          <div><div class="k">Metre ağırlığı</div><div class="v" id="rKgm">–</div></div>
+          <div><div class="k" data-i18n="kPer">Bir boydan çıkan</div><div class="v" id="rPer">–</div></div>
+          <div><div class="k" data-i18n="kCost">Toplam maliyet</div><div class="v" id="rCost">–</div></div>
+          <div><div class="k" data-i18n="kPart">Ham parça ağırlığı</div><div class="v" id="rPart">–</div></div>
+          <div><div class="k" data-i18n="kFin">Bitmiş parça ağırlığı</div><div class="v" id="rFin">–</div></div>
+          <div><div class="k" data-i18n="kPerPiece">Parça başı harcanan</div><div class="v" id="rPerPiece">–</div></div>
+          <div><div class="k" data-i18n="kTotal">Toplam malzeme</div><div class="v" id="rTotal">–</div></div>
+          <div><div class="k" data-i18n="kScrap">Toplam hurda</div><div class="v scrapv" id="rScrap">–</div></div>
+          <div><div class="k" data-i18n="kChip">Talaş</div><div class="v" id="rChip">–</div></div>
+          <div><div class="k" data-i18n="kKerf">Kesme payı hurdası</div><div class="v" id="rKerf">–</div></div>
+          <div><div class="k" data-i18n="kLeft">Boy sonu artıkları</div><div class="v" id="rLeft">–</div></div>
+          <div><div class="k" data-i18n="kBarW">Bir boyun ağırlığı</div><div class="v" id="rBarW">–</div></div>
+          <div><div class="k" data-i18n="kKgm">Metre ağırlığı</div><div class="v" id="rKgm">–</div></div>
         </div>
       </div>
     </div>
 
     <div class="sheet plan">
-      <h2>Kesim planı</h2>
+      <h2 data-i18n="hPlan">Kesim planı</h2>
       <div id="plan"></div>
       <div class="legend">
-        <span><i style="background:var(--part)"></i>Parça</span>
-        <span><i style="background:var(--cut)"></i>Kesme payı</span>
-        <span><i style="background:var(--scrap)"></i>Artık</span>
-        <span><i style="background:repeating-linear-gradient(45deg,var(--scrap) 0 3px,var(--muted) 3px 5px)"></i>Bağlama payı</span>
+        <span><i style="background:var(--part)"></i><span data-i18n="lgPart">Parça</span></span>
+        <span><i style="background:var(--cut)"></i><span data-i18n="lgKerf">Kesme payı</span></span>
+        <span><i style="background:var(--scrap)"></i><span data-i18n="lgLeft">Artık</span></span>
+        <span><i style="background:repeating-linear-gradient(45deg,var(--scrap) 0 3px,var(--muted) 3px 5px)"></i><span data-i18n="lgGrip">Bağlama payı</span></span>
       </div>
-      <p class="note">Ham parça, kesilmiş çubuğun ağırlığıdır. Hurda; talaş, kesme payları, bağlama payları ve boy sonlarında kalan artıkların toplamıdır. Birim fiyat, satın alınan boyların tamamının maliyetinin adede bölünmesiyle bulunur.</p>
+      <p class="note" data-i18n="note">Ham parça, kesilmiş çubuğun ağırlığıdır. Hurda; talaş, kesme payları, bağlama payları ve boy sonlarında kalan artıkların toplamıdır. Birim fiyat, satın alınan boyların tamamının maliyetinin adede bölünmesiyle bulunur.</p>
     </div>
   </section>
 </div>
@@ -214,16 +232,111 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
 (function(){
   const $ = id => document.getElementById(id);
   const KEY = 'torna-hesap-v1';
-  const def = {shape:'hex', size:'20', mat:'7.85', rho:'7,85', len:'45', qty:'100', kerf:3, price:'60', bar:'3000', fin:'', grip:'50'};
+  const def = {shape:'hex', size:'20', mat:'7.85', rho:'7,85', len:'45', qty:'100', kerf:3, price:'60', bar:'3000', fin:'', grip:'50', cur:'TRY'};
   let s = Object.assign({}, def);
   try { const raw = localStorage.getItem(KEY); if (raw) s = Object.assign(s, JSON.parse(raw)); } catch(e) {}
+
+  // ---- Dil (TR / EN) ----
+  const LANG_KEY = 'torna-lang';
+  const I18N = {
+    tr: {
+      locale:'tr-TR', home:'MLK Craft ana sayfa', homeHref:'/', logoAlt:'MLK Craft logosu',
+      title:'Torna malzeme hesabı', sub:'Boydan kesim, ağırlık ve maliyet', inputs:'Girdiler', results:'Sonuçlar',
+      hMat:'Malzeme', profile:'Profil', hex:'Altıgen', round:'Yuvarlak',
+      sizeHex:'İki karşılıklı kenar arası', sizeRound:'Çap', mat:'Malzeme türü',
+      m785:'Çelik — 7,85 g/cm³', m793:'Paslanmaz — 7,93 g/cm³', m850:'Pirinç — 8,50 g/cm³', m270:'Alüminyum — 2,70 g/cm³', m896:'Bakır — 8,96 g/cm³', mOther:'Diğer (yoğunluğu gir)',
+      rho:'Yoğunluk', hCut:'Kesim ve sipariş', len:'Parça boyu', qty:'Adet', pcs:'ad',
+      fin:'Bitmiş parça ağırlığı', finPh:'Boş bırakılabilir', finHint:'Tornalandıktan sonraki ağırlık. Boş bırakılırsa talaş hesaba katılmaz.',
+      kerf:'Kesme ucu kalınlığı', price:'Kg fiyatı', bar:'Boy uzunluğu', grip:'Bağlama payı', gripHint:'Boyun sonunda aynada kalan, işlenemeyen kısım. Hurdaya sayılır.',
+      kUnit:'Parça birim fiyatı', kBars:'Gereken boy', kPer:'Bir boydan çıkan', kCost:'Toplam maliyet', kPart:'Ham parça ağırlığı', kFin:'Bitmiş parça ağırlığı',
+      kPerPiece:'Parça başı harcanan', kTotal:'Toplam malzeme', kScrap:'Toplam hurda', kChip:'Talaş', kKerf:'Kesme payı hurdası', kLeft:'Boy sonu artıkları',
+      kBarW:'Bir boyun ağırlığı', kKgm:'Metre ağırlığı',
+      hPlan:'Kesim planı', lgPart:'Parça', lgKerf:'Kesme payı', lgLeft:'Artık', lgGrip:'Bağlama payı',
+      note:'Ham parça, kesilmiş çubuğun ağırlığıdır. Hurda; talaş, kesme payları, bağlama payları ve boy sonlarında kalan artıkların toplamıdır. Birim fiyat, satın alınan boyların tamamının maliyetinin adede bölünmesiyle bulunur.',
+      cur: () => 'TL',
+      bars: (n, t) => t + ' boy',
+      perPcs:'adet', notEntered:'girilmedi', perPart:'g/parça',
+      pct: t => '%' + t,
+      fullBar:'Tam boy', lastBar:'Son boy', oneBar:'Tek boy',
+      planLbl: (head, n, nt, left) => `<b>${head}</b> — ${nt} parça, artık ${left} mm (bağlama payı dahil)`,
+      partsAria: n => n + ' parça',
+      eSizeHex:'Karşılıklı kenar ölçüsünü girin.', eSizeRound:'Çapı girin.', eRho:'Yoğunluğu girin.', eLen:'Parça boyunu girin.',
+      eQty:'Adet tam sayı ve sıfırdan büyük olmalı.', ePrice:'Kg fiyatını girin.', eBar:'Boy uzunluğunu girin.',
+      eGrip:'Bağlama payı geçerli bir sayı olmalı (yoksa 0 yazın).',
+      eFit:'Parça boyu ile kesme payının toplamı, bağlama payı düşüldükten sonra kalan boydan uzun olamaz.',
+      eFin:'Bitmiş parça ağırlığı sıfırdan büyük olmalı ya da boş bırakılmalı.',
+      eHeavy: w => 'Bitmiş parça, ham parçadan (' + w + ' g) ağır olamaz. Ölçüleri veya ağırlığı kontrol edin.'
+    },
+    en: {
+      locale:'en-US', home:'MLK Craft home', homeHref:'/en/', logoAlt:'MLK Craft logo',
+      title:'Lathe material calculator', sub:'Bar cutting, weight and cost', inputs:'Inputs', results:'Results',
+      hMat:'Bar stock', profile:'Profile', hex:'Hex', round:'Round',
+      sizeHex:'Across flats', sizeRound:'Diameter', mat:'Material',
+      m785:'Steel — 7.85 g/cm³', m793:'Stainless steel — 7.93 g/cm³', m850:'Brass — 8.50 g/cm³', m270:'Aluminium — 2.70 g/cm³', m896:'Copper — 8.96 g/cm³', mOther:'Other (enter density)',
+      rho:'Density', hCut:'Cutting and order', len:'Part length', qty:'Quantity', pcs:'pcs',
+      fin:'Finished part weight', finPh:'Optional', finHint:'Weight after turning. Leave blank to exclude chips from the calculation.',
+      kerf:'Parting tool width', price:'Price per kg', bar:'Bar length', grip:'Chuck allowance', gripHint:'The unusable end of the bar left in the chuck. Counted as scrap.',
+      kUnit:'Material cost per part', kBars:'Bars required', kPer:'Parts per bar', kCost:'Total cost', kPart:'Blank weight', kFin:'Finished part weight',
+      kPerPiece:'Material used per part', kTotal:'Total material', kScrap:'Total scrap', kChip:'Chips', kKerf:'Kerf scrap', kLeft:'Bar-end remnants',
+      kBarW:'Weight per bar', kKgm:'Weight per metre',
+      hPlan:'Cutting plan', lgPart:'Part', lgKerf:'Kerf', lgLeft:'Remnant', lgGrip:'Chuck allowance',
+      note:'Blank weight is the weight of the cut-off piece of bar. Scrap is the sum of chips, kerf, chuck allowances and bar-end remnants. Material cost per part is the cost of all bars purchased divided by the quantity.',
+      cur: c => c,
+      bars: (n, t) => t + (n === 1 ? ' bar' : ' bars'),
+      perPcs:'pcs', notEntered:'not entered', perPart:'g/part',
+      pct: t => t + '%',
+      fullBar:'Full bar', lastBar:'Last bar', oneBar:'Single bar',
+      planLbl: (head, n, nt, left) => `<b>${head}</b> — ${nt} ${n === 1 ? 'part' : 'parts'}, ${left} mm remnant (incl. chuck allowance)`,
+      partsAria: n => n + (n === 1 ? ' part' : ' parts'),
+      eSizeHex:'Enter the across-flats size.', eSizeRound:'Enter the diameter.', eRho:'Enter the density.', eLen:'Enter the part length.',
+      eQty:'Quantity must be a whole number greater than zero.', ePrice:'Enter the price per kg.', eBar:'Enter the bar length.',
+      eGrip:'Chuck allowance must be a valid number (enter 0 if there is none).',
+      eFit:'Part length plus kerf cannot be longer than the bar length left after the chuck allowance.',
+      eFin:'Finished part weight must be greater than zero, or leave it blank.',
+      eHeavy: w => 'The finished part cannot be heavier than the blank (' + w + ' g). Check the dimensions or the weight.'
+    }
+  };
+  const urlLang = (location.search.match(/[?&]lang=(tr|en)\b/) || [])[1];
+  let savedLang = null;
+  try { savedLang = localStorage.getItem(LANG_KEY); } catch(e) {}
+  let lang = urlLang || (savedLang === 'tr' || savedLang === 'en' ? savedLang : null) || (/^en\b/i.test(navigator.language || '') ? 'en' : 'tr');
+  let T = I18N[lang];
+
+  function applyLang(){
+    T = I18N[lang];
+    document.documentElement.lang = lang;
+    document.title = T.title;
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = T[el.dataset.i18n]; });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', T[el.dataset.i18nAria]));
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => el.setAttribute('placeholder', T[el.dataset.i18nPh]));
+    document.querySelectorAll('[data-i18n-alt]').forEach(el => el.setAttribute('alt', T[el.dataset.i18nAlt]));
+    $('logo').setAttribute('href', T.homeHref);
+    $('lTr').setAttribute('aria-pressed', lang === 'tr');
+    $('lEn').setAttribute('aria-pressed', lang === 'en');
+    $('cur').hidden = lang !== 'en';
+    $('priceUnit').hidden = lang === 'en';
+    $('priceInp').classList.toggle('has-cur', lang === 'en');
+    // Yoğunluğu dilin ondalık ayracıyla göster (7,85 ↔ 7.85); parse() ikisini de aynı okur.
+    const rhoM = String(s.rho).trim().match(/^(\d+)[.,](\d+)$/);
+    if (rhoM) { s.rho = rhoM[1] + (lang === 'en' ? '.' : ',') + rhoM[2]; $('rho').value = s.rho; }
+  }
+  function setLang(l){
+    lang = l;
+    try { localStorage.setItem(LANG_KEY, l); } catch(e) {}
+    try { history.replaceState(null, '', location.pathname + (l === 'en' ? '?lang=en' : '') + location.hash); } catch(e) {}
+    applyLang(); update();
+  }
+  $('lTr').onclick = () => setLang('tr');
+  $('lEn').onclick = () => setLang('en');
+  $('cur').value = ['TRY','USD','EUR'].includes(s.cur) ? s.cur : 'TRY';
+  $('cur').addEventListener('change', () => { s.cur = $('cur').value; update(); });
 
   const num = v => { const n = parseFloat(String(v).trim().replace(/\./g,'').replace(',', '.')); return isFinite(n) ? n : NaN; };
   // allow both "12.5" and "12,5": if only a dot and no comma, treat dot as decimal
   const parse = v => { v = String(v).trim(); if (v.indexOf(',') === -1) { const n = parseFloat(v); return isFinite(n) ? n : NaN; } return num(v); };
-  const f = (n, d=0) => n.toLocaleString('tr-TR', {minimumFractionDigits:d, maximumFractionDigits:d});
+  const f = (n, d=0) => n.toLocaleString(T.locale, {minimumFractionDigits:d, maximumFractionDigits:d});
   const g = n => n >= 10000 ? f(n/1000, 2) + ' <small>kg</small>' : f(n, n < 100 ? 1 : 0) + ' <small>g</small>';
-  const tl = n => f(n, 2) + ' <small>TL</small>';
+  const tl = n => f(n, 2) + ' <small>' + T.cur(s.cur) + '</small>';
 
   const ids = ['size','rho','len','qty','price','bar','fin','grip'];
   ids.forEach(id => { $(id).value = s[id]; $(id).addEventListener('input', () => { s[id] = $(id).value; update(); }); });
@@ -273,7 +386,7 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
     const gx = W - G*sc;
     if (x < gx) out += `<rect x="${x.toFixed(2)}" y="0" width="${(gx-x).toFixed(2)}" height="${H}" fill="var(--scrap)"/>`;
     if (G > 0) out += `<defs><pattern id="gh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--scrap)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="2.5"/></pattern></defs><rect x="${Math.max(gx,x).toFixed(2)}" y="0" width="${(W-Math.max(gx,x)).toFixed(2)}" height="${H}" fill="url(#gh)"/>`;
-    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:34px" role="img" aria-label="${n} parça"><rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/>${out}<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="height:34px" role="img" aria-label="${T.partsAria(n)}"><rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/>${out}<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
   }
 
   function clear(){
@@ -286,7 +399,7 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
     $('bRound').setAttribute('aria-pressed', s.shape === 'round');
     $('k2').setAttribute('aria-pressed', s.kerf === 2);
     $('k3').setAttribute('aria-pressed', s.kerf === 3);
-    $('sizeLbl').textContent = s.shape === 'hex' ? 'İki karşılıklı kenar arası' : 'Çap';
+    $('sizeLbl').textContent = s.shape === 'hex' ? T.sizeHex : T.sizeRound;
     $('rhoField').hidden = s.mat !== 'other';
     try { localStorage.setItem(KEY, JSON.stringify(s)); } catch(e) {}
 
@@ -295,22 +408,22 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
     drawSection(s.shape, size);
 
     const errs = [];
-    if (!(size > 0)) errs.push(s.shape === 'hex' ? 'Karşılıklı kenar ölçüsünü girin.' : 'Çapı girin.');
-    if (!(rho > 0)) errs.push('Yoğunluğu girin.');
-    if (!(L > 0)) errs.push('Parça boyunu girin.');
-    if (!(qty > 0) || qty % 1) errs.push('Adet tam sayı ve sıfırdan büyük olmalı.');
-    if (!(price >= 0) || String(s.price).trim() === '') errs.push('Kg fiyatını girin.');
-    if (!(B > 0)) errs.push('Boy uzunluğunu girin.');
+    if (!(size > 0)) errs.push(s.shape === 'hex' ? T.eSizeHex : T.eSizeRound);
+    if (!(rho > 0)) errs.push(T.eRho);
+    if (!(L > 0)) errs.push(T.eLen);
+    if (!(qty > 0) || qty % 1) errs.push(T.eQty);
+    if (!(price >= 0) || String(s.price).trim() === '') errs.push(T.ePrice);
+    if (!(B > 0)) errs.push(T.eBar);
     const G = String(s.grip).trim() === '' ? 0 : parse(s.grip);
-    if (!(G >= 0)) errs.push('Bağlama payı geçerli bir sayı olmalı (yoksa 0 yazın).');
-    if (L > 0 && B > 0 && G >= 0 && L + k > B - G) errs.push('Parça boyu ile kesme payının toplamı, bağlama payı düşüldükten sonra kalan boydan uzun olamaz.');
+    if (!(G >= 0)) errs.push(T.eGrip);
+    if (L > 0 && B > 0 && G >= 0 && L + k > B - G) errs.push(T.eFit);
     const finRaw = String(s.fin || '').trim();
     const fin = finRaw === '' ? null : parse(finRaw);
-    if (fin !== null && !(fin > 0)) errs.push('Bitmiş parça ağırlığı sıfırdan büyük olmalı ya da boş bırakılmalı.');
+    if (fin !== null && !(fin > 0)) errs.push(T.eFin);
     if (fin !== null && fin > 0 && size > 0 && L > 0 && rho > 0) {
       const A0 = s.shape === 'hex' ? Math.sqrt(3)/2 * size*size : Math.PI * size*size / 4;
       const raw0 = A0 * L * rho / 1000;
-      if (fin > raw0) errs.push('Bitmiş parça, ham parçadan (' + f(raw0, 1) + ' g) ağır olamaz. Ölçüleri veya ağırlığı kontrol edin.');
+      if (fin > raw0) errs.push(T.eHeavy(f(raw0, 1)));
     }
     $('err').innerHTML = errs.join('<br>');
     if (errs.length){ clear(); return; }
@@ -333,16 +446,16 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
     const fullLeft = B - per * use;
     const lastLeft = B - lastN * use;
 
-    $('rUnit').innerHTML = f(cost / qty, 2) + ' TL';
-    $('rBars').innerHTML = f(bars) + ' boy';
-    $('rPer').innerHTML = f(per) + ' <small>adet</small>';
+    $('rUnit').innerHTML = f(cost / qty, 2) + ' ' + T.cur(s.cur);
+    $('rBars').innerHTML = T.bars(bars, f(bars));
+    $('rPer').innerHTML = f(per) + ' <small>' + T.perPcs + '</small>';
     $('rCost').innerHTML = tl(cost);
     $('rPart').innerHTML = g(partG);
-    $('rFin').innerHTML = finG === null ? '<small>girilmedi</small>' : g(finG);
-    $('rChip').innerHTML = finG === null ? '<small>girilmedi</small>' : g(chipG) + ' <small>(' + f(partG - finG, 1) + ' g/parça)</small>';
+    $('rFin').innerHTML = finG === null ? '<small>' + T.notEntered + '</small>' : g(finG);
+    $('rChip').innerHTML = finG === null ? '<small>' + T.notEntered + '</small>' : g(chipG) + ' <small>(' + f(partG - finG, 1) + ' ' + T.perPart + ')</small>';
     $('rPerPiece').innerHTML = g(totalG / qty);
     $('rTotal').innerHTML = g(totalG);
-    $('rScrap').innerHTML = g(scrapG) + ' <small>%' + f(scrapG / totalG * 100, 1) + '</small>';
+    $('rScrap').innerHTML = g(scrapG) + ' <small>' + T.pct(f(scrapG / totalG * 100, 1)) + '</small>';
     $('rKerf').innerHTML = g(kerfG);
     $('rLeft').innerHTML = g(leftG);
     $('rBarW').innerHTML = g(barG);
@@ -350,12 +463,13 @@ h2{font-family:"Space Grotesk","Segoe UI",sans-serif;font-weight:700;font-size:2
 
     let html = '';
     if (bars > 1){
-      html += `<div class="planrow"><div class="lbl"><b>Tam boy × ${f(bars-1)}</b> — ${f(per)} parça, artık ${f(fullLeft, fullLeft % 1 ? 1 : 0)} mm (bağlama payı dahil)</div>${barSvg(B, use, L, k, per, G)}</div>`;
+      html += `<div class="planrow"><div class="lbl">${T.planLbl(T.fullBar + ' × ' + f(bars-1), per, f(per), f(fullLeft, fullLeft % 1 ? 1 : 0))}</div>${barSvg(B, use, L, k, per, G)}</div>`;
     }
-    html += `<div class="planrow"><div class="lbl"><b>${bars > 1 ? 'Son boy' : 'Tek boy'}</b> — ${f(lastN)} parça, artık ${f(lastLeft, lastLeft % 1 ? 1 : 0)} mm (bağlama payı dahil)</div>${barSvg(B, use, L, k, lastN, G)}</div>`;
+    html += `<div class="planrow"><div class="lbl">${T.planLbl(bars > 1 ? T.lastBar : T.oneBar, lastN, f(lastN), f(lastLeft, lastLeft % 1 ? 1 : 0))}</div>${barSvg(B, use, L, k, lastN, G)}</div>`;
     $('plan').innerHTML = html;
   }
 
+  applyLang();
   update();
 })();
 if ('serviceWorker' in navigator) {
