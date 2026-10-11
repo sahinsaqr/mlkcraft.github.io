@@ -134,6 +134,8 @@
       background: rgba(34,211,238,0.08); box-shadow: 0 0 12px rgba(34,211,238,0.12);
     }
     .policy h3 { font-size: 1.02rem; font-weight: 600; margin: 20px 0 8px; color: var(--text); }
+    .policy [id] { scroll-margin-top: 90px; }
+    .policy code { font-size: .9em; color: var(--text); background: rgba(120,150,220,0.1); padding: 1px 6px; border-radius: 6px; }
     .policy p, .policy li { color: #b4c1e0; font-size: .98rem; }
     .policy p + p { margin-top: 10px; }
     .policy ul { padding-left: 20px; margin: 10px 0; display: grid; gap: 6px; }
@@ -207,7 +209,7 @@
       <div class="page-head">
         <span class="eyebrow">Yasal</span>
         <h1><span class="gradient-text">Gizlilik Politikası</span></h1>
-        <p class="meta">Son güncelleme: 9 Ekim 2026</p>
+        <p class="meta">Son güncelleme: 11 Ekim 2026</p>
       </div>
 
       <div class="policy-wrap">
@@ -283,6 +285,7 @@
           <h2><span class="num">08</span> Haklarınız ve Veri Silme</h2>
           <p>6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) ve uygulanabilir olduğu durumlarda GDPR kapsamında; verilerinize erişme, düzeltilmesini veya silinmesini isteme, işlemeye itiraz etme ve verilerinizin taşınmasını talep etme haklarına sahipsiniz.</p>
           <p><strong>Hesap ve veri silme talebi:</strong> Uygulama içindeki hesap silme seçeneğini kullanabilir veya kullandığınız uygulamanın adını ve hesap bilgilerinizi belirterek <a href="mailto:info@mlkcraft.com?subject=Veri%20Silme%20Talebi">info@mlkcraft.com</a> adresine e-posta gönderebilirsiniz. Talepleriniz en geç 30 gün içinde yanıtlanır.</p>
+          <p>Futbol Takip uygulamasında hesabınızı ve verilerinizi uygulama içinden nasıl sileceğiniz <a href="#futbol-takip">Futbol Takip</a> bölümünde açıklanmıştır.</p>
 
           <h2><span class="num">09</span> Çocukların Gizliliği</h2>
           <p>Hizmetlerimiz 13 yaşın altındaki çocuklara yönelik değildir ve bu yaştaki çocuklardan bilerek kişisel veri toplamayız. Çocuklara yönelik yayınlanan uygulamalarda yalnızca aileler için onaylı reklam ve analiz ayarları kullanılır. Bir çocuğun bize veri sağladığını fark ederseniz lütfen bizimle iletişime geçin; bu veriler derhal silinir.</p>
@@ -293,8 +296,17 @@
           <h2><span class="num">11</span> Politika Değişiklikleri</h2>
           <p>Bu politikayı zaman zaman güncelleyebiliriz. Güncel sürüm her zaman bu sayfada, "Son güncelleme" tarihiyle birlikte yayınlanır. Önemli değişikliklerde uygulama içinde veya web sitemizde bilgilendirme yaparız.</p>
 
+          <h2><span class="num">12</span> Uygulamalara Özel Bilgiler</h2>
+          <h3 id="futbol-takip">Futbol Takip</h3>
+          <p>Futbol Takip, takip ettiğin futbol takımlarının maçlarını, skorlarını ve puan durumunu gösteren ücretsiz bir uygulamadır (Android uygulaması <code>com.sahin.futboltakip</code> ve web sürümü).</p>
+          <p><strong>Spor verileri.</strong> Maç, skor, fikstür ve puan durumu bilgileri üçüncü taraf spor veri kaynaklarından alınır ve GitHub Pages üzerinden sunulur. Bu verileri alırken senin hakkında bir bilgi göndermeyiz; barındırma hizmeti (GitHub) teknik kayıtlar (ör. IP adresi) tutabilir.</p>
+          <p><strong>Takip edilen takımlar ve bildirim ayarları.</strong> Uygulamayı kullanmak için hesap açman gerekmez; ilk açılışta anonim bir hesap oluşturulur. Takip ettiğin takımlar ve bildirim ayarların (goller, maç başladı / devre arası, maç sonucu, maçtan önce hatırlatma) cihazında ve Google Firebase (Cloud Firestore, Avrupa – eur3) sunucularında hesabına bağlı olarak saklanır. Google ile giriş yaparsan adın, e-posta adresin ve profil fotoğrafın yalnızca hesabını tanımak ve takımlarını cihazların arasında eşitlemek için kullanılır.</p>
+          <p><strong>Bildirim belirteci.</strong> Android uygulamasında bildirimlere izin verirsen cihazın Firebase Cloud Messaging'den bir bildirim belirteci alır ve takip ettiğin takımların bildirim konularına (ör. bir takımın gol bildirimleri) abone olur. Sunucumuz kimin hangi takımı takip ettiğini bilmez; bildirimler takım konularına gönderilir. Bir bildirim türünü kapattığında ya da takımı çıkardığında ilgili konudan çıkılır.</p>
+          <p><strong>Reklam ve analiz.</strong> Futbol Takip'te reklam, analiz (istatistik) ya da çökme raporlama aracı yoktur.</p>
+          <p><strong>Hesabını ve verilerini silme.</strong> Uygulamada <strong>Hesap → Hesabımı sil</strong> ile buluttaki ve cihazındaki takım listeni, bildirim ayarlarını ve hesabını istediğin an kalıcı olarak silebilirsin; cihazın tüm bildirim konularından da çıkarılır. Çıkış yaptığında takımların o cihazdan kaldırılır, Google hesabında kalır. Uygulamaya erişemiyorsan giriş yaptığın e-posta adresiyle <a href="mailto:info@mlkcraft.com">info@mlkcraft.com</a> adresine yazabilirsin.</p>
+
           <div class="contact-box">
-            <h2><span class="num">12</span> İletişim</h2>
+            <h2><span class="num">13</span> İletişim</h2>
             <p>Bu Gizlilik Politikası veya kişisel verilerinizle ilgili her türlü soru ve talebiniz için bize ulaşın:</p>
             <a class="mail" href="mailto:info@mlkcraft.com">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
