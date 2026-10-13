@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hesap Silme — Sudoku Düello | MLK Craft</title>
+  <meta name="description" content="Sudoku Düello: Günlük Bulmaca oyununda hesabını ve verilerini nasıl sileceğin.">
+  <meta name="theme-color" content="#050914">
+  <meta property="og:title" content="Hesap Silme — Sudoku Düello | MLK Craft">
+  <meta property="og:description" content="Sudoku Düello: Günlük Bulmaca oyununda hesabını ve verilerini nasıl sileceğin.">
+  <meta property="og:url" content="https://mlkcraft.com/hesap-silme">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://mlkcraft.com/assets/logo.png">
+  <link rel="canonical" href="https://mlkcraft.com/hesap-silme">
+  <link rel="alternate" hreflang="tr" href="https://mlkcraft.com/hesap-silme">
+  <link rel="alternate" hreflang="en" href="https://mlkcraft.com/en/delete-account">
+  <link rel="alternate" hreflang="x-default" href="https://mlkcraft.com/hesap-silme">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050914;
+      --bg-2: #0a1224;
+      --card: #0e1830;
+      --border: rgba(120, 150, 220, 0.14);
+      --border-strong: rgba(120, 150, 220, 0.28);
+      --text: #e8eeff;
+      --muted: #8c9aba;
+      --accent: #4f8cff;
+      --accent-2: #8b5cf6;
+      --accent-3: #22d3ee;
+      --radius: 22px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+
+    .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    .bg-glow {
+      position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(600px 400px at 15% 10%, rgba(79, 140, 255, 0.16), transparent 70%),
+        radial-gradient(500px 400px at 85% 25%, rgba(139, 92, 246, 0.12), transparent 70%),
+        radial-gradient(700px 500px at 50% 100%, rgba(34, 211, 238, 0.06), transparent 70%),
+        var(--bg);
+    }
+
+    /* ---------- Nav ---------- */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: background .3s, border-color .3s;
+      border-bottom: 1px solid transparent;
+    }
+    header.scrolled {
+      background: rgba(5, 9, 20, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-color: var(--border);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 12px; }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo img { height: auto; transition: filter .3s, transform .3s; }
+    .logo-mark { width: 44px; filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.35)); }
+    .logo-text { width: 60px; }
+    .logo:hover .logo-mark { filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6)); transform: rotate(-4deg); }
+    .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+    .nav-links a {
+      padding: 8px 14px; border-radius: 999px; color: var(--muted); font-size: .95rem; font-weight: 500;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--text); background: rgba(120,150,220,0.08); }
+    .nav-links .nav-cta { color: var(--text); background: var(--accent); margin-left: 6px; }
+    .nav-links .nav-cta:hover { background: #3d7bf0; }
+
+    /* ---------- Page head ---------- */
+    .page-head { padding: 150px 0 40px; text-align: center; }
+    .eyebrow {
+      display: inline-block; font-size: .8rem; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 12px;
+    }
+    .page-head h1 {
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: clamp(2.4rem, 7vw, 4rem); line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 16px;
+    }
+    .gradient-text {
+      background: linear-gradient(120deg, #ffffff 10%, #9dbaff 45%, var(--accent-2) 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .page-head .meta { color: var(--muted); font-size: .95rem; }
+
+    /* ---------- Language switch ---------- */
+    .lang-sel { display: flex; align-items: center; gap: 2px; margin-left: 6px; font-size: .85rem; font-weight: 600; letter-spacing: .5px; color: var(--border-strong); }
+    .nav-links .lang-sel a { padding: 6px 7px; border-radius: 8px; color: var(--muted); background: none; }
+    .nav-links .lang-sel a:hover { color: var(--text); }
+    .nav-links .lang-sel a[aria-current="true"] { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
+
+    /* ---------- Policy body ---------- */
+    .policy-wrap { max-width: 860px; margin: 0 auto 40px; }
+    .policy {
+      border-radius: var(--radius); padding: 48px 44px;
+      background: linear-gradient(180deg, var(--card), var(--bg-2));
+      border: 1px solid var(--border);
+    }
+    .policy[hidden] { display: none; }
+    .policy .intro { color: #c3cff0; font-size: 1.05rem; padding-bottom: 28px; margin-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .policy h2 {
+      font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; letter-spacing: -.3px;
+      margin: 36px 0 12px; display: flex; align-items: baseline; gap: 12px;
+    }
+    .policy h2 .num {
+      flex: none; font-size: .8rem; font-weight: 700; color: var(--accent-3);
+      padding: 2px 9px; border-radius: 999px; border: 1px solid rgba(34,211,238,0.3);
+      background: rgba(34,211,238,0.08); box-shadow: 0 0 12px rgba(34,211,238,0.12);
+    }
+    .policy h3 { font-size: 1.02rem; font-weight: 600; margin: 20px 0 8px; color: var(--text); }
+    .policy [id] { scroll-margin-top: 90px; }
+    .policy code { font-size: .9em; color: var(--text); background: rgba(120,150,220,0.1); padding: 1px 6px; border-radius: 6px; }
+    .policy p, .policy li { color: #b4c1e0; font-size: .98rem; }
+    .policy p + p { margin-top: 10px; }
+    .policy ul { padding-left: 20px; margin: 10px 0; display: grid; gap: 6px; }
+    .policy li::marker { color: var(--accent); }
+    .policy strong { color: var(--text); font-weight: 600; }
+    .policy a { color: #9dbaff; border-bottom: 1px solid rgba(157,186,255,0.35); transition: color .2s, border-color .2s; }
+    .policy a:hover { color: var(--accent-3); border-color: var(--accent-3); }
+
+    .contact-box {
+      margin-top: 36px; padding: 26px 28px; border-radius: 18px;
+      background:
+        radial-gradient(400px 200px at 0% 0%, rgba(79,140,255,0.18), transparent 70%),
+        radial-gradient(400px 200px at 100% 100%, rgba(139,92,246,0.16), transparent 70%),
+        rgba(5,9,20,0.4);
+      border: 1px solid var(--border-strong);
+    }
+    .contact-box h2 { margin-top: 0; }
+    .contact-box .mail {
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 12px;
+      padding: 11px 20px; border-radius: 999px; font-weight: 600; color: #fff; border: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 30px rgba(79, 140, 255, 0.3);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .contact-box .mail:hover { color: #fff; transform: translateY(-2px); box-shadow: 0 14px 36px rgba(79, 140, 255, 0.45); }
+
+    /* ---------- Footer ---------- */
+    footer { border-top: 1px solid var(--border); padding: 32px 0; margin-top: 60px; }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: .88rem; }
+    .footer-bottom a { color: #c3cff0; transition: color .2s; }
+    .footer-bottom a:hover { color: var(--accent); }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+    @media (max-width: 760px) {
+      .container { padding: 0 16px; }
+      .nav-links a { padding: 8px 10px; font-size: .9rem; }
+      .nav-links .home-link { display: none; }
+      .lang-sel { margin-left: 0; }
+      .page-head { padding: 120px 0 32px; }
+      .policy { padding: 32px 22px; border-radius: 18px; }
+      .contact-box { padding: 22px 20px; }
+      .contact-box .mail { word-break: break-all; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+      .steps { counter-reset: s; list-style: none; padding-left: 0 !important; }
+    .steps li { counter-increment: s; position: relative; padding-left: 40px; }
+    .steps li::before { content: counter(s); position: absolute; left: 0; top: 2px; width: 26px; height: 26px; border-radius: 50%;
+      display: grid; place-items: center; font-size: .8rem; font-weight: 700; color: var(--accent-3);
+      border: 1px solid rgba(34,211,238,0.3); background: rgba(34,211,238,0.08); }
+    .app-tag { display: inline-block; margin-top: 8px; font-size: .85rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header id="header">
+    <div class="container nav">
+      <a href="/" class="logo" aria-label="MLK Craft">
+        <img class="logo-mark" src="assets/logo-mark.png" width="44" height="53" alt="">
+        <img class="logo-text" src="assets/logo-text.png" width="60" height="34" alt="MLK Craft">
+      </a>
+      <ul class="nav-links">
+        <li><a href="/" class="home-link">Ana Sayfa</a></li>
+        <li><a href="mailto:info@mlkcraft.com" class="nav-cta">Bize Ulaşın</a></li>
+        <li class="lang-sel" role="group" aria-label="Dil / Language">
+          <a href="/hesap-silme.html" lang="tr" hreflang="tr" aria-current="true">TR</a><span aria-hidden="true">|</span><a href="/en/delete-account.html" lang="en" hreflang="en">EN</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="page-head">
+        <span class="eyebrow">Sudoku Düello</span>
+        <h1><span class="gradient-text">Hesap ve Veri Silme</span></h1>
+        <p class="meta">Son güncelleme: 13 Ekim 2026</p>
+      </div>
+      <div class="policy-wrap">
+        <article class="policy">
+          <p class="intro">
+            Bu sayfa, <strong>MLK Craft</strong> tarafından geliştirilen <strong>Sudoku Düello: Günlük Bulmaca</strong>
+            oyununda hesabını ve verilerini nasıl sileceğini anlatır.<br>
+            <span class="app-tag">Android paket adı: <code>com.sahin.sudoku</code></span>
+          </p>
+
+          <h2><span class="num">01</span> Oyunun içinden silme</h2>
+          <p>Oyun telefonunda yüklüyse hesabını birkaç saniyede kendin silebilirsin:</p>
+          <ul class="steps">
+            <li>Oyunu aç ve sağ üstteki <strong>⚙️ Ayarlar</strong> simgesine dokun.</li>
+            <li><strong>Destek ve Hesap</strong> bölümünde <strong>🗑️ Hesabı Sil</strong>'e dokun.</li>
+            <li>Silinecek verileri gösteren pencerede <strong>Evet, Hesabımı Sil</strong>'e dokun. Google ile giriş yaptıysan güvenlik için Google hesabını bir kez daha onaylaman istenebilir.</li>
+          </ul>
+          <p>Silme işlemi anında gerçekleşir ve geri alınamaz.</p>
+
+          <h2><span class="num">02</span> Oyun yüklü değilse e-postayla silme</h2>
+          <p>Oyuna erişemiyorsan <a href="mailto:info@mlkcraft.com?subject=Sudoku%20D%C3%BCello%20-%20Hesap%20Silme%20Talebi">info@mlkcraft.com</a> adresine <strong>"Sudoku Düello – Hesap Silme Talebi"</strong> konulu bir e-posta gönder ve şunları yaz:</p>
+          <ul>
+            <li>Oyundaki <strong>oyuncu adın</strong> (kullanıcı adın),</li>
+            <li>Google ile giriş yaptıysan bağlı olan <strong>Google e-posta adresin</strong>.</li>
+          </ul>
+          <p>Hesabın ve verilerin en geç <strong>30 gün</strong> içinde silinir ve sana e-postayla bilgi verilir. Hesabın sana ait olduğunu doğrulamak için ek bilgi isteyebiliriz.</p>
+
+          <h2><span class="num">03</span> Silinen veriler</h2>
+          <p>Hesap silindiğinde aşağıdakilerin tümü sunucularımızdan (Google Firebase) ve cihazından kalıcı olarak silinir:</p>
+          <ul>
+            <li>Oyun hesabın (misafir hesabı veya Google ile bağlanan hesap kaydı),</li>
+            <li>Oyuncu adın ve ayırttığın kullanıcı adı,</li>
+            <li>Bulut kaydın: jetonların, ipucu ve bomba hakların, istatistiklerin, günlük görev ve etkinlik ilerlemen, ayarların,</li>
+            <li>Tüm zamanlar ve haftalık sıralamalardaki kayıtların,</li>
+            <li>Düello istatistiklerin ve varsa rakip arama kaydın.</li>
+          </ul>
+
+          <h2><span class="num">04</span> Saklanan veriler ve süreleri</h2>
+          <ul>
+            <li><strong>Düello kayıtları:</strong> Biten düelloların kayıtları oyuncular sonuç ekranından çıkınca otomatik silinir; bize ait başka bir kopya tutulmaz.</li>
+            <li><strong>Kullanım istatistikleri (Google Analytics for Firebase):</strong> Kimliğinle eşleştirilmeyen, anonim kullanım verileri Google tarafından en fazla 14 ay saklanır ve sonra otomatik silinir.</li>
+            <li><strong>Reklam verileri (Google AdMob):</strong> Reklam kimliğine bağlı veriler bizim değil Google'ın kontrolündedir ve <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Gizlilik Politikası</a>'na göre saklanır. Reklam kimliğini telefonunun <em>Ayarlar → Google → Reklamlar</em> bölümünden sıfırlayabilir veya silebilirsin.</li>
+            <li><strong>Satın alma kayıtları:</strong> Uygulama içi satın alma ödemeleri Google Play tarafından işlenir; yasal muhasebe ve vergi yükümlülükleri nedeniyle Google Play'deki sipariş kayıtları silinmez.</li>
+          </ul>
+          <p>Silme işleminden sonra oyunu yeniden açarsan sıfırdan yeni bir misafir hesabı oluşturulur. Silinen jeton ve ilerleme geri getirilemez.</p>
+          <p>Hangi verileri neden topladığımızın ayrıntıları için <a href="/privacy.html">Gizlilik Politikası</a>'na bakabilirsin.</p>
+
+          <div class="contact-box">
+            <h2><span class="num">05</span> İletişim</h2>
+            <p>Hesap silme ile ilgili soruların için bize yazabilirsin:</p>
+            <a class="mail" href="mailto:info@mlkcraft.com?subject=Sudoku%20D%C3%BCello%20-%20Hesap%20Silme%20Talebi">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+              info@mlkcraft.com
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-bottom">
+      <span>© <span id="year">2026</span> MLK Craft. Tüm hakları saklıdır.</span>
+      <span class="footer-links">
+        <a href="/">Ana Sayfa</a>
+        <a href="mailto:info@mlkcraft.com">info@mlkcraft.com</a>
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var header = document.getElementById('header');
+      function onScroll() { header.classList.toggle('scrolled', window.scrollY > 20); }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
